@@ -1,0 +1,28 @@
+server:
+  port: 8081
+
+
+  #JDBC datasource
+#spring:
+#  datasource:
+#    hikari:
+#      driver-class-name: oracle.jdbc.OracleDriver
+#      jdbc-url: jdbc:oracle:thin:@localhost:1521:XE
+#      username: kimjisoo
+#      password: pass
+
+#JDBC spy datasource
+log4jdbc:
+  spylogdelegator:
+    name: net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator
+
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  datasource:
+    hikari:
+      driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+      jdbc-url: jdbc:log4jdbc:oracle:thin:@localhost:1521:XE
+      username: kimjisoo
+      password: pass

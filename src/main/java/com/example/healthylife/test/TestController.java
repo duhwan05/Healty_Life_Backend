@@ -13,8 +13,8 @@ public class TestController {
     private TestService testService;
 
     @GetMapping("/test")
-    public TestModel test(@RequestParam String input1) {
-        return TestModel.builder()
+    public TestEntity test(@RequestParam String input1) {
+        return TestEntity.builder()
                 .data1("testDate:" + input1)
                 .data2(12345)
                 .build();

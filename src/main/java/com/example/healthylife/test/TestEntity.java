@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class TestModel {
+public class TestEntity {
     private String data1;
     private Integer data2;
 }

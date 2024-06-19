@@ -1,5 +1,7 @@
-package com.example.healthylife.user;
+package com.example.healthylife.service;
 
+import com.example.healthylife.entity.UserEntity;
+import com.example.healthylife.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -1,5 +1,6 @@
-package com.example.healthylife.user;
+package com.example.healthylife.service;
 
+import com.example.healthylife.entity.UserEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

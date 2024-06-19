@@ -1,5 +1,7 @@
-package com.example.healthylife.user;
+package com.example.healthylife.controller;
 
+import com.example.healthylife.entity.UserEntity;
+import com.example.healthylife.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

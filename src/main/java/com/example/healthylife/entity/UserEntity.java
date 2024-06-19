@@ -1,4 +1,4 @@
-package com.example.healthylife.user;
+package com.example.healthylife.entity;
 
 import lombok.*;
 import org.springframework.data.annotation.LastModifiedBy;

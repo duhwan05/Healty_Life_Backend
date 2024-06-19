@@ -18,28 +18,28 @@ public class UserController {
     }
 
     //회원 전체 조회
-    @PostMapping("/users")
+    @GetMapping("/user/all")
     public ResponseEntity<Object> selectUserList(){
         List<UserEntity> userEntityList = userService.userList();
         return new ResponseEntity<>(userEntityList, HttpStatus.OK);
     }
 
     //회원 등록
-    @PostMapping("/user")
+    @PostMapping("/user/register")
     public ResponseEntity<Object> userRegister(@RequestBody UserEntity userEntity){
         UserEntity result = userService.registerUser(userEntity);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     //회원 수정
-    @PutMapping("/user")
+    @PostMapping("/user/update")
     public ResponseEntity<Object> updateUser(@RequestBody UserEntity userEntity){
         UserEntity result = userService.updateUser(userEntity);
         return new ResponseEntity<>(result,HttpStatus.OK);
     }
 
     //회원 삭제
-    @DeleteMapping("/user")
+    @PostMapping("/user/delete")
     public ResponseEntity<Object> deleteUser(@RequestParam long userSq){
         userService.deleteUserBySq(userSq);
         return new ResponseEntity<>(HttpStatus.OK);

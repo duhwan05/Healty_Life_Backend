@@ -10,12 +10,12 @@
         ],
         "essential":true,
         "name":"trendy",
-        "cpu": 500,
-        "memory": 3000,
+        "cpu": 512,
+        "memory": 3072,
         "image":"211125776553.dkr.ecr.ap-northeast-2.amazonaws.com/trendy-backend:latest"
       }
     ],
-    "cpu": "500",
-    "memory": "3000",
+    "cpu": "512",
+    "memory": "3072",
     "family":"thendy-task"
 }

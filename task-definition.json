@@ -1,0 +1,21 @@
+{
+    "containerDefinitions":[
+      {
+        "portMappings":[
+          {
+            "hostPort": 0,
+            "containerPort":80,
+            "protocol":"tcp"
+          }
+        ],
+        "essential":true,
+        "name":"trendy",
+        "cpu": 512,
+        "memory": 3072,
+        "image":"211125776553.dkr.ecr.ap-northeast-2.amazonaws.com/trendy-backend:latest"
+      }
+    ],
+    "cpu": "512",
+    "memory": "3072",
+    "family":"thendy-task"
+}

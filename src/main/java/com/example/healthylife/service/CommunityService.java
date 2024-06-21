@@ -10,12 +10,10 @@ import java.util.List;
 public interface CommunityService {
     //글전체조회
     List<CommunityEntity> communityList();
-
     //글등록
     CommunityEntity registerCommunity(CommunityEntity communityEntity);
     //글 수정
     CommunityEntity updateCommunity(CommunityEntity communityEntity);
-
     //글삭제
     void deleteBySq(long communitySq);
 }

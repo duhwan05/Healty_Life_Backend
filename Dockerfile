@@ -22,5 +22,3 @@ WORKDIR /app
 # 애플리케이션 실행
 CMD ["java", "-jar", "app.jar"]
 
-# 포트 설정
-EXPOSE 8080

@@ -20,5 +20,5 @@ COPY --from=build /home/gradle/project/build/libs/*.jar /app/app.jar
 WORKDIR /app
 
 # 애플리케이션 실행
-CMD ["java", "-jar", "app.jar"]
+CMD ["java", "-jar", "build/libs/healthyLife1.0.jar"]
 

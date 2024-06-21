@@ -1,7 +1,8 @@
-package com.example.healthylife.service;
+package com.example.healthylife.serviceImpl;
 
 import com.example.healthylife.entity.CommunityEntity;
 import com.example.healthylife.repository.CommunityRepository;
+import com.example.healthylife.service.CommunityService;
 import org.springframework.stereotype.Service;
 
 

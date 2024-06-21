@@ -1,7 +1,8 @@
-package com.example.healthylife.service;
+package com.example.healthylife.serviceImpl;
 
 import com.example.healthylife.entity.UserEntity;
 import com.example.healthylife.repository.UserRepository;
+import com.example.healthylife.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 

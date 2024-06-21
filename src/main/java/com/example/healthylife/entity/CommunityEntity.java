@@ -14,7 +14,7 @@ public class CommunityEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "title_sq", unique = true,nullable = false)
+    @Column(name = "community_sq", unique = true,nullable = false)
     // 글 제목 시퀀스
     private long communitySq;
 
@@ -29,7 +29,7 @@ public class CommunityEntity implements Serializable {
 
     //작성자
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_sq")
     private UserEntity user;
 
     //builder

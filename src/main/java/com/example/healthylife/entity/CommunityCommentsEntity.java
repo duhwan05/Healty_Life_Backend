@@ -24,12 +24,12 @@ public class CommunityCommentsEntity implements Serializable {
 
     //게시글 넘버 시퀀스(foreign key)
     @ManyToOne
-    @JoinColumn(name = "title_sq")
+    @JoinColumn(name = "community_sq")
     private CommunityEntity community;
 
     //작성자
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_sq")
     private UserEntity user;
 
     //builder

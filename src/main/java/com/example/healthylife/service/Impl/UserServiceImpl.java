@@ -1,18 +1,22 @@
-package com.example.healthylife.serviceImpl;
+package com.example.healthylife.service.Impl;
 
 import com.example.healthylife.entity.UserEntity;
 import com.example.healthylife.repository.UserRepository;
 import com.example.healthylife.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+
 
     public UserServiceImpl(UserRepository userRepository){
         this.userRepository = userRepository;
@@ -24,6 +28,11 @@ public class UserServiceImpl implements UserService {
     public List<UserEntity> userList(){
         return (List<UserEntity>) userRepository.findAll();
 
+    }
+
+    @Override
+    public Optional<UserEntity> findUserById(String userId) {
+        return userRepository.findByUserId(userId);
     }
 
     //회원 등록
@@ -58,4 +67,6 @@ public class UserServiceImpl implements UserService {
     public void deleteUserBySq(long userSq){
         userRepository.deleteById(userSq);
     }
+
+
 }

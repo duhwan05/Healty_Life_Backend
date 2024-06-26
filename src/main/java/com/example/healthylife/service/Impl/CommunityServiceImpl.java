@@ -1,4 +1,4 @@
-package com.example.healthylife.serviceImpl;
+package com.example.healthylife.service.Impl;
 
 import com.example.healthylife.entity.CommunityEntity;
 import com.example.healthylife.repository.CommunityRepository;

@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
+        //db 데이터(패스워드)가 평문으로 돼 있어서 평문 인코더 사용
         return NoOpPasswordEncoder.getInstance();
     }
 }

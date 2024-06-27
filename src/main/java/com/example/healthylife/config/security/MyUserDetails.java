@@ -21,6 +21,7 @@ public class MyUserDetails implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<String> roles = new ArrayList<>();
         roles.add("ROLE_USER");
+        //이후 role 을 나눈다면 코드 추가해서 사용 가능
 
         return roles.stream()
                 .map(SimpleGrantedAuthority::new)
@@ -35,7 +36,9 @@ public class MyUserDetails implements UserDetails {
     @Override
     public String getUsername() {
         return userEntity.getUserId();
+        //userName
     }
+
 
     @Override
     public boolean isAccountNonExpired() {

@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
         }
 
         if (Objects.nonNull(user.getUserEmail())&& !"".equalsIgnoreCase(user.getUserEmail())){
-            resultEntity = userEntity.toBuilder().userEmail(user.getUserStatus()).build();
+            resultEntity = userEntity.toBuilder().build();
 
         }
         return userRepository.save(resultEntity);

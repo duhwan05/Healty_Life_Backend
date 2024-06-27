@@ -33,9 +33,6 @@ public class UserEntity implements Serializable {
     @Column(name = "user_name", length = 200)
     private String userName;
 
-    // user status
-    @Column(name = "user_status", nullable = false, length = 20)
-    private String userStatus;
 
     // user email
     @Column(name = "user_email",length = 300)
@@ -55,14 +52,13 @@ public class UserEntity implements Serializable {
 
     // builder
     @Builder(toBuilder = true)
-    public UserEntity(long userSq,String userId, String userPw,String userName,
-                      String userStatus,String userEmail,String userAddress, long userAge,
+    public UserEntity(long userSq,String userId, String userPw,String userName,String userEmail,String userAddress, long userAge,
                       long userPhone){
         this.userSq = userSq;
         this.userId = userId;
         this.userPw = userPw;
         this.userName = userName;
-        this.userStatus = userStatus;
+
         this.userEmail = userEmail;
         this.userAddress = userAddress;
         this.userAge = userAge;

@@ -30,6 +30,7 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    //회원 단일조회
     @Override
     public Optional<UserEntity> findUserById(String userId) {
         return userRepository.findByUserId(userId);

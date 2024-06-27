@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface UserService {
     //회원 전체조회
     List<UserEntity> userList();
-    // TODO
+    // 회원 단일조회
     Optional<UserEntity> findUserById(String userId);
     //회원 등록
     UserEntity registerUser(UserEntity userEntity);

@@ -10,4 +10,5 @@ public class HealthyLifeApplication {
         SpringApplication.run(HealthyLifeApplication.class, args);
     }
 
+
 }

@@ -8,7 +8,7 @@ COPY --chown=gradle:gradle . /home/gradle/project
 WORKDIR /home/gradle/project
 
 # Gradle 빌드 수행
-RUN gradle clean build --no-daemon
+RUN gradle cleanBuildCache && gradle clean build --no-daemon --info
 
 # =============================== Start of Application Stage =============================== #
 FROM openjdk:17-jdk-slim

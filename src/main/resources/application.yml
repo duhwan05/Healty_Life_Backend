@@ -1,6 +1,6 @@
 server:
   port: 8081
-  connection-timeout: 65s  # 전체 연결 타임아웃
+  connection-timeout: 190s  # 전체 연결 타임아웃
   tomcat:
     connection-timeout: 66000ms  # 연결 타임아웃
     keep-alive-timeout: 65000ms  # Keep-Alive 타임아웃

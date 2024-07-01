@@ -3,7 +3,7 @@
       {
         "portMappings":[
           {
-            "hostPort": 0,
+            "hostPort": 8081,
             "containerPort":80,
             "protocol":"tcp"
           }

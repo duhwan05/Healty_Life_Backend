@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Entity
 @Getter
 @Table(name = "user")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class UserEntity implements Serializable {
 
     @Id

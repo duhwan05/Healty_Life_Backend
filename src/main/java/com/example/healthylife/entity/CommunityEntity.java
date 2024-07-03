@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Entity
 @Getter
 @Table(name = "community")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class CommunityEntity implements Serializable {
 
     @Id

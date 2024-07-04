@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Entity
 @Getter
 @Table(name = "comments")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class CommunityCommentsEntity implements Serializable {
 
     @Id

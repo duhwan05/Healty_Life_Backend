@@ -1,4 +1,4 @@
-package com.example.healthylife.config.security.jwt;
+package com.example.healthylife.config.jwt;
 
 import com.example.healthylife.config.security.MyUserDetails;
 import com.example.healthylife.entity.UserEntity;

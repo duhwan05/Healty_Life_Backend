@@ -1,4 +1,4 @@
-name: Build, Push to ECR, and Deploy to ECS
+name: Build, Save to S3, and Deploy to EC2
 
 on:
   push:
@@ -13,39 +13,39 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
-
-      - name: Set up Amazon ECR CLI
-        id: ecr
-        run: aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
-
       - name: Build Docker Image
-        run: docker build -t seungjun23/dockerfile:0.1 .
+        run: docker build -t my-app:latest .
 
-      - name: Push Docker Image to ECR
+      - name: Save Docker Image to Tar
+        run: docker save -o my-app.tar my-app:latest
+
+      - name: Upload Docker Image to S3
+        run: aws s3 cp my-app.tar s3://trendy-healthy-backend.store/deployments/my-app.tar
+
+      - name: Deploy Docker Image to EC2
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USER: ${{ secrets.EC2_USER }}
         run: |
-          docker tag seungjun23/dockerfile:0.1 ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/trendy-backend:latest 
-          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/trendy-backend:latest
+          # SSH into EC2 instance and deploy the Docker image
+          ssh -i <(echo "$SSH_PRIVATE_KEY") $EC2_USER@$EC2_HOST << 'EOF'
+            # Update and install Docker if needed
+            sudo apt-get update
+            sudo apt-get install -y docker.io
 
-      - name: Fill in the new image ID in the Amazon ECS task definition
-        id: task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
-        with:
-          task-definition: task-definition.json  # 여기서 필요에 따라 파일명 변경
-          container-name: trendy
-          image: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/trendy-backend:latest
+            # Download the Docker image tar file from S3
+            aws s3 cp s3://trendy-healthy-backend.store/deployments/my-app.tar my-app.tar
 
-      - name: Deploy Amazon ECS task definition
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-        with:
-          service: ecs-service  # ECS 서비스 이름으로 변경
-          cluster: trendy-healthy-cluster  # ECS 클러스터 이름으로 변경
-          task-definition: ${{ steps.task-def.outputs.task-definition }}
+            # Load the Docker image
+            docker load -i my-app.tar
+
+            # Remove any previous containers (optional)
+            docker rm -f my-app-container || true
+
+            # Run the Docker container
+            docker run -d --name my-app-container -p 8081:8080 my-app:latest
+          EOF
 
       - name: Cleanup
-        run: docker logout ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+        run: rm my-app.tar

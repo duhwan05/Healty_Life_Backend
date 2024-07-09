@@ -1,21 +1,25 @@
 {
-    "containerDefinitions":[
-      {
-        "portMappings":[
-          {
-            "hostPort": 8081,
-            "containerPort":80,
-            "protocol":"tcp"
-          }
-        ],
-        "essential":true,
-        "name":"trendy",
-        "cpu": 512,
-        "memory": 3072,
-        "image":"211125776553.dkr.ecr.ap-northeast-2.amazonaws.com/trendy-backend:latest"
-      }
-    ],
-    "cpu": "512",
-    "memory": "3072",
-    "family":"thendy-task"
+  "family": "thendy-task",
+  "networkMode": "awsvpc",
+  "containerDefinitions": [
+    {
+      "name": "trendy",
+      "image": "211125776553.dkr.ecr.ap-northeast-2.amazonaws.com/trendy-backend:latest",
+      "cpu": 512,
+      "memory": 3072,
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 80,
+          "hostPort": 0,  
+          "protocol": "tcp"
+        }
+      ]
+    }
+  ],
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "cpu": "512",
+  "memory": "3072"
 }

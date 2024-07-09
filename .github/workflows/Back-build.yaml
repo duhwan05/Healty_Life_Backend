@@ -1,4 +1,4 @@
-name: Build, Save to S3, and Deploy to EC2
+name: Build, Push to ECR, and Deploy to EC2
 
 on:
   push:
@@ -16,9 +16,6 @@ jobs:
       - name: Build Docker Image
         run: docker build -t my-app:latest .
 
-      - name: Save Docker Image to Tar
-        run: docker save -o my-app.tar my-app:latest
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -26,11 +23,15 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-2
 
-      - name: Upload Docker Image to S3
-        env:
-          BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }}
+      - name: Login to ECR
         run: |
-          aws s3 sync ./ s3://$BUCKET_NAME/ --exclude "*" --include "my-app.tar"
+          $(aws ecr get-login --no-include-email --region ap-northeast-2)
+
+      - name: Tag Docker Image
+        run: docker tag my-app:latest 211125776553.dkr.ecr.ap-northeast-2.amazonaws.com/trendy-backend:latest
+
+      - name: Push Docker Image to ECR
+        run: docker push 211125776553.dkr.ecr.ap-northeast-2.amazonaws.com/trendy-backend:latest
 
       - name: Deploy Docker Image to EC2
         env:
@@ -49,40 +50,22 @@ jobs:
               sudo apt-get update
               sudo apt-get install -y docker.io
 
-              # 디스크 공간 확보
-              docker container prune -f
-              docker image prune -a -f
-              docker network prune -f
-              docker volume prune -f
+              # Login to ECR
+              $(aws ecr get-login --no-include-email --region ap-northeast-2)
 
-              sudo rm -rf /var/cache/apt/*
-              sudo rm -rf /var/lib/apt/lists/*
-
-              # Install AWS CLI if not already installed
-              if ! command -v aws &> /dev/null
-              then
-                sudo apt-get install -y unzip
-                curl "https://d1uj6qtbmh3dt5.cloudfront.net/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-                unzip awscliv2.zip
-                sudo ./aws/install
-              fi
-
-              # Download the Docker image tar file from S3
-              aws s3 cp s3://$BUCKET_NAME/my-app.tar my-app.tar
-
-              # Load the Docker image
-              docker load -i my-app.tar
+              # Pull the Docker image
+              docker pull 211125776553.dkr.ecr.ap-northeast-2.amazonaws.com/trendy-backend:latest
 
               # Remove any previous containers (optional)
               docker rm -f my-app-container || true
 
               # Run the Docker container
-              docker run -d --name my-app-container -p 8081:8080 my-app:latest
-          EOF
+              docker run -d --name my-app-container -p 8081:8080 211125776553.dkr.ecr.ap-northeast-2.amazonaws.com/trendy-backend:latest
+            EOF
             if [ $? -eq 0 ]; then break; fi
             echo "SSH command failed, retrying in 10 seconds..."
             sleep 10
           done
 
       - name: Cleanup
-        run: rm my-app.tar
+        run: rm /tmp/id_rsa

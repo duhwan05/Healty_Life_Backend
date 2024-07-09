@@ -3,7 +3,7 @@ name: Build, Save to S3, and Deploy to EC2
 on:
   push:
     branches:
-      - main
+      - main  # 원하는 브랜치로 변경
 
 jobs:
   deploy:
@@ -27,7 +27,10 @@ jobs:
           aws-region: ap-northeast-2
 
       - name: Upload Docker Image to S3
-        run: aws s3 cp my-app.tar s3://trendy-healthy-backend.store/my-app.tar
+        env:
+          BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }}
+        run: |
+          aws s3 sync ./ s3://$BUCKET_NAME/ --exclude "*" --include "my-app.tar"
 
       - name: Deploy Docker Image to EC2
         env:
@@ -39,33 +42,38 @@ jobs:
           echo "$SSH_PRIVATE_KEY" > /tmp/id_rsa
           chmod 600 /tmp/id_rsa
 
-          # SSH into EC2 instance and deploy the Docker image
-          ssh -o StrictHostKeyChecking=no -i /tmp/id_rsa $EC2_USER@$EC2_HOST << 'EOF'
-            # Update and install Docker if needed
-            sudo apt-get update
-            sudo apt-get install -y docker.io
+          # Retry logic for SSH
+          for i in {1..5}; do
+            ssh -o ServerAliveInterval=60 -o StrictHostKeyChecking=no -i /tmp/id_rsa $EC2_USER@$EC2_HOST << 'EOF'
+              # Update and install Docker if needed
+              sudo apt-get update
+              sudo apt-get install -y docker.io
 
-            # Install AWS CLI if not already installed
-            if ! command -v aws &> /dev/null
-            then
-              sudo apt-get install -y unzip
-              curl "https://d1uj6qtbmh3dt5.cloudfront.net/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-              unzip awscliv2.zip
-              sudo ./aws/install
-            fi
+              # Install AWS CLI if not already installed
+              if ! command -v aws &> /dev/null
+              then
+                sudo apt-get install -y unzip
+                curl "https://d1uj6qtbmh3dt5.cloudfront.net/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+                unzip awscliv2.zip
+                sudo ./aws/install
+              fi
 
-            # Download the Docker image tar file from S3
-            aws s3 cp s3://trendy-healthy-backend.store/my-app.tar my-app.tar
+              # Download the Docker image tar file from S3
+              aws s3 cp s3://$BUCKET_NAME/my-app.tar my-app.tar
 
-            # Load the Docker image
-            docker load -i my-app.tar
+              # Load the Docker image
+              docker load -i my-app.tar
 
-            # Remove any previous containers (optional)
-            docker rm -f my-app-container || true
+              # Remove any previous containers (optional)
+              docker rm -f my-app-container || true
 
-            # Run the Docker container
-            docker run -d --name my-app-container -p 8081:8080 my-app:latest
-          EOF
+              # Run the Docker container
+              docker run -d --name my-app-container -p 8081:8080 my-app:latest
+            EOF
+            if [ $? -eq 0 ]; then break; fi
+            echo "SSH command failed, retrying in 10 seconds..."
+            sleep 10
+          done
 
       - name: Cleanup
         run: rm my-app.tar

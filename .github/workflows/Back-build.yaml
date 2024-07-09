@@ -20,6 +20,9 @@ jobs:
         run: docker save -o my-app.tar my-app:latest
 
       - name: Upload Docker Image to S3
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: aws s3 cp my-app.tar s3://trendy-healthy-backend.store/my-app.tar
 
       - name: Deploy Docker Image to EC2
@@ -27,6 +30,8 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           EC2_HOST: ${{ secrets.EC2_HOST }}
           EC2_USER: ${{ secrets.EC2_USER }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
           # SSH into EC2 instance and deploy the Docker image
           ssh -i <(echo "$SSH_PRIVATE_KEY") $EC2_USER@$EC2_HOST << 'EOF'

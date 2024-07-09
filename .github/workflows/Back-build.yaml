@@ -13,25 +13,23 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log in to AWS ECR
+        uses: aws-actions/amazon-ecr-login@v1
+
       - name: Build Docker Image
-        run: docker build -t my-app:latest .
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-northeast-2
-
-      - name: Login to ECR
         run: |
-          $(aws ecr get-login --no-include-email --region ap-northeast-2)
+          docker build -t trendy-backend .
 
       - name: Tag Docker Image
-        run: docker tag my-app:latest 211125776553.dkr.ecr.ap-northeast-2.amazonaws.com/trendy-backend:latest
+        run: |
+          docker tag trendy-backend:latest 211125776553.dkr.ecr.ap-northeast-2.amazonaws.com/trendy-backend:latest
 
       - name: Push Docker Image to ECR
-        run: docker push 211125776553.dkr.ecr.ap-northeast-2.amazonaws.com/trendy-backend:latest
+        run: |
+          docker push 211125776553.dkr.ecr.ap-northeast-2.amazonaws.com/trendy-backend:latest
 
       - name: Deploy Docker Image to EC2
         env:
@@ -45,15 +43,24 @@ jobs:
 
           # Retry logic for SSH
           for i in {1..5}; do
-            ssh -o ServerAliveInterval=60 -o StrictHostKeyChecking=no -i /tmp/id_rsa $EC2_USER@$EC2_HOST <<EOF
+            ssh -o ServerAliveInterval=60 -o StrictHostKeyChecking=no -i /tmp/id_rsa $EC2_USER@$EC2_HOST << 'EOF'
               # Update and install Docker if needed
               sudo apt-get update
               sudo apt-get install -y docker.io
 
-              # Login to ECR
-              $(aws ecr get-login --no-include-email --region ap-northeast-2)
+              # Install AWS CLI if not already installed
+              if ! command -v aws &> /dev/null
+              then
+                sudo apt-get install -y unzip
+                curl "https://d1uj6qtbmh3dt5.cloudfront.net/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+                unzip awscliv2.zip
+                sudo ./aws/install
+              fi
 
-              # Pull the Docker image
+              # Log in to AWS ECR
+              aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 211125776553.dkr.ecr.ap-northeast-2.amazonaws.com
+
+              # Pull the Docker image from ECR
               docker pull 211125776553.dkr.ecr.ap-northeast-2.amazonaws.com/trendy-backend:latest
 
               # Remove any previous containers (optional)
@@ -66,6 +73,3 @@ jobs:
             echo "SSH command failed, retrying in 10 seconds..."
             sleep 10
           done
-
-      - name: Cleanup
-        run: rm /tmp/id_rsa

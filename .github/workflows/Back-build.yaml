@@ -20,7 +20,7 @@ jobs:
         run: docker save -o my-app.tar my-app:latest
 
       - name: Upload Docker Image to S3
-        run: aws s3 cp my-app.tar s3://trendy-healthy-backend.store/deployments/my-app.tar
+        run: aws s3 cp my-app.tar s3://trendy-healthy-backend.store/my-app.tar
 
       - name: Deploy Docker Image to EC2
         env:
@@ -35,7 +35,7 @@ jobs:
             sudo apt-get install -y docker.io
 
             # Download the Docker image tar file from S3
-            aws s3 cp s3://trendy-healthy-backend.store/deployments/my-app.tar my-app.tar
+            aws s3 cp s3://trendy-healthy-backend.store/my-app.tar my-app.tar
 
             # Load the Docker image
             docker load -i my-app.tar

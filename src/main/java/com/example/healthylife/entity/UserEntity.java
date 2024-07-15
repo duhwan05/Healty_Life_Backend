@@ -21,7 +21,7 @@ public class UserEntity implements Serializable {
     private Long userSq;
 
     // user id
-    @Column(name ="user_id", nullable = false, length = 100)
+    @Column(name ="user_id", unique = true, nullable = false, length = 100)
     private String userId;
 
     // user password

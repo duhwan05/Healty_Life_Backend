@@ -8,9 +8,9 @@ import io.jsonwebtoken.security.Keys;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
+
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.User;
+
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 //JWT 관련 메소드를 제공하는 클래스
 //JWT 생성, 검증, 추출 등의 기능을 수행한다.
 @Slf4j
-@Component
+
 //@Component
 @RequiredArgsConstructor
 public class JwtUtil {

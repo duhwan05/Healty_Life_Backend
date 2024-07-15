@@ -11,7 +11,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
-
+import org.springframework.security.web.session.DisableEncodeUrlFilter;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 
 @Slf4j
@@ -38,8 +39,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        http.mvcMatcher("/api/**");
 //        http.httpBasic();
 
-        JwtAuthenticationFilter filter = new JwtAuthenticationFilter();
-        http.addFilterAfter(filter, SecurityContextPersistenceFilter.class);
+        CharacterEncodingFilter encFilter = new CharacterEncodingFilter();
+        encFilter.setEncoding("UTF-8");
+        encFilter.setForceEncoding(true);
+        http.addFilterAfter(encFilter, DisableEncodeUrlFilter.class);
+
+        http.addFilterAfter(new JwtAuthenticationFilter(), SecurityContextPersistenceFilter.class);
     }
 
 

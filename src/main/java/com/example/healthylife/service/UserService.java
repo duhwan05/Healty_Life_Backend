@@ -13,7 +13,7 @@ public interface UserService {
     // 회원 단일조회
     Optional<UserEntity> findUserById(String userId);
     //회원 등록
-    UserEntity registerUser(UserEntity userEntity);
+    UserEntity signUpUser(UserEntity userEntity);
     //회원 수정
     UserEntity updateUser(UserEntity userEntity);
     //회원 삭제

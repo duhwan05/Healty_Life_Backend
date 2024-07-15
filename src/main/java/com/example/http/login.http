@@ -1,0 +1,17 @@
+@@ -0,0 +1,17 @@
+### 로그인
+POST http://localhost:8081/login
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+Accept-Encoding: gzip, deflate, br, zstd
+Accept-Language: ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7
+Cache-Control: max-age=0
+Connection: keep-alive
+Content-Type: application/x-www-form-urlencoded
+Host: localhost:8081
+Origin: http://localhost:8081
+
+username=u1111&password=abcde
+
+### test
+GET http://localhost:8081/swagger-ui/index.html
+Content-Type : application/json

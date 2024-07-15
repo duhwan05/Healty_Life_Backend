@@ -32,6 +32,7 @@ import java.util.stream.Collectors;
 //JWT 생성, 검증, 추출 등의 기능을 수행한다.
 @Slf4j
 @Component
+//@Component
 @RequiredArgsConstructor
 public class JwtUtil {
 

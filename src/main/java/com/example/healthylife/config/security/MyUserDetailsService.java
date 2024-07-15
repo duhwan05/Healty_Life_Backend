@@ -16,6 +16,7 @@ import java.util.Optional;
 public class MyUserDetailsService implements UserDetailsService {
     private final UserService userService;
 
+
     @Override
     //username으로 사용자 한 명 가져옴(UserId)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

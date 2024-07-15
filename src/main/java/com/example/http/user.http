@@ -1,0 +1,18 @@
+### sigup
+POST http://localhost:8081/user/signup
+accept: */*
+Content-Type: application/json; charset=UTF-8
+#Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiJ1MTExMSIsInJvbGUiOiJST0xFX1VTRVIiLCJpYXQiOjE3MjA2NzgwNzAsImV4cCI6MTcyMTI3ODA3MH0.28TzKD2TavXP9lnkvLe2UZThL-aN9p7pJI-ii1_n-CE
+
+{
+  "userAddress": "경기 시흥시",
+  "userAge": 25,
+  "userEmail": "raina11@naver.com",
+  "userId": "jisoo",
+  "userName": "string",
+  "userPhone": 12313,
+  "userPw": "0000",
+  "userSq": 0
+}
+
+###

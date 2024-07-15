@@ -39,35 +39,35 @@ public class UserServiceImpl implements UserService {
     //회원 등록
     @Override
     @Transactional
-    public UserEntity registerUser(UserEntity userEntity){
-        return userRepository.save(userEntity);
-    }
-
-    //회원 수정
-    @Override
-    @Transactional
-    public UserEntity updateUser(UserEntity userEntity){
-        UserEntity user = userRepository.findById(userEntity.getUserSq()).get();
-
-        UserEntity resultEntity = UserEntity.builder().build();
-
-        if(Objects.nonNull(user.getUserName()) && !"".equalsIgnoreCase(user.getUserName())){
-            resultEntity = userEntity.toBuilder().userName(user.getUserName()).build();
+        public UserEntity signUpUser(UserEntity userEntity){
+            return userRepository.save(userEntity);
         }
 
-        if (Objects.nonNull(user.getUserEmail())&& !"".equalsIgnoreCase(user.getUserEmail())){
-            resultEntity = userEntity.toBuilder().build();
+        //회원 수정
+        @Override
+        @Transactional
+        public UserEntity updateUser(UserEntity userEntity){
+            UserEntity user = userRepository.findById(userEntity.getUserSq()).get();
 
+            UserEntity resultEntity = UserEntity.builder().build();
+
+            if(Objects.nonNull(user.getUserName()) && !"".equalsIgnoreCase(user.getUserName())){
+                resultEntity = userEntity.toBuilder().userName(user.getUserName()).build();
+            }
+
+            if (Objects.nonNull(user.getUserEmail())&& !"".equalsIgnoreCase(user.getUserEmail())){
+                resultEntity = userEntity.toBuilder().build();
+
+            }
+            return userRepository.save(resultEntity);
         }
-        return userRepository.save(resultEntity);
+
+        //회원 삭제
+        @Override
+        @Transactional
+        public void deleteUserBySq(long userSq){
+            userRepository.deleteById(userSq);
+        }
+
+
     }
-
-    //회원 삭제
-    @Override
-    @Transactional
-    public void deleteUserBySq(long userSq){
-        userRepository.deleteById(userSq);
-    }
-
-
-}

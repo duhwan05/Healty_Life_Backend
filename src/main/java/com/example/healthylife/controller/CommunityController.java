@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/community")
+
+@RequestMapping("/api/community")
 @RestController
 @RequiredArgsConstructor
 public class CommunityController {
@@ -45,7 +46,7 @@ public class CommunityController {
     @ApiOperation(value = "커뮤니티 글 삭제")
     @PostMapping("/delete")
     public Boolean delete(@RequestParam long communitySq) {
-         communityService.deleteBySq(communitySq);
-         return true;
+        communityService.deleteBySq(communitySq);
+        return true;
     }
 }

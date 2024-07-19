@@ -47,3 +47,5 @@ out
 gen
 .gradle
 build
+application-private.yml
+src/main/resources/application-private.yml

@@ -13,7 +13,8 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:3000") // 허용할 도메인
+                        .allowedOrigins("http://localhost:3000",
+                                "https://trendy-healthy.store") // 허용할 도메인
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "HEAD")
                         .allowedHeaders("*")
                         .allowCredentials(true);

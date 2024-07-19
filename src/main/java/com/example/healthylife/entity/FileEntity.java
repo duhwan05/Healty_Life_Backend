@@ -10,7 +10,7 @@ import java.io.Serializable;
 @ToString
 @Entity
 @Getter
-@Table(name = "todo_exercise")
+@Table(name = "file_image")
 @NoArgsConstructor
 
 public class FileEntity implements Serializable  {
@@ -26,11 +26,11 @@ public class FileEntity implements Serializable  {
         @Column(name = "origin_file_name",nullable = false,length = 100)
         private String originFileNmae;
 
-        //오운완 게시물 내용
+
         @Column(name = "file_name",length = 500)
         private String fileName;
 
-    //오운완 게시물 내용
+
     @Column(name = "file_path",length = 500)
     private String filePath;
 

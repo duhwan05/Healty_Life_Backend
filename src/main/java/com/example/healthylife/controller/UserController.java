@@ -3,14 +3,17 @@ package com.example.healthylife.controller;
 import com.example.healthylife.config.security.MyUserDetailsService;
 import com.example.healthylife.entity.UserEntity;
 import com.example.healthylife.service.UserService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RequestMapping("/user")
 @RestController
@@ -25,8 +28,13 @@ public class UserController {
 
 
     //로그인
-
-
+//
+//    //히원 단일조회
+//    @ApiOperation(value = "회원 단일 조회")
+//    @GetMapping("/one")
+//    public  Optional<UserEntity> findByUserId(String userId){
+//       Optional<UserEntity> find
+//    }
 
 
 

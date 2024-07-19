@@ -24,17 +24,15 @@ public class UserController {
     public UserController(UserService userService){
         this.userService = userService;
     }
-    //회원가입
 
 
-    //로그인
-//
-//    //히원 단일조회
-//    @ApiOperation(value = "회원 단일 조회")
-//    @GetMapping("/one")
-//    public  Optional<UserEntity> findByUserId(String userId){
-//       Optional<UserEntity> find
-//    }
+    //회원 단일조회
+    @ApiOperation(value = "회원 단일 조회")
+    @GetMapping("/one")
+    public  Optional<UserEntity> findUserById(@RequestParam String userId){
+
+        return userService.findUserById(userId);
+    }
 
 
 

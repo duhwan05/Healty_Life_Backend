@@ -3,6 +3,7 @@ package com.example.healthylife.service.Impl;
 import com.example.healthylife.entity.UserEntity;
 import com.example.healthylife.repository.UserRepository;
 import com.example.healthylife.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;

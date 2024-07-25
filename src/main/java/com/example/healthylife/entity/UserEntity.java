@@ -65,5 +65,7 @@ public class UserEntity implements Serializable {
         this.userPhone = userPhone;
     }
 
-
+    public UserEntity withUserPw(String userPw) {
+        return this.toBuilder().userPw(userPw).build();
+    }
 }

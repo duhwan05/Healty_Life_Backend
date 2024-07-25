@@ -2,7 +2,7 @@
 ### authentication(login) api
 ### - req : id/pw
 ### - res : access-token, refresh-token
-GET http://localhost:8081/jwt/authenticate?username=admin&password=123456789
+POST http://localhost:8081/jwt/authenticate?username=pppp&password=pppp
 
 // {"access-token":"eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiJ1MTExMSIsInJvbGUiOiJST0xFX1VTRVIiLCJpYXQiOjE3MjA2NjA0ODQsImV4cCI6MTcyMTI2MDQ4NH0.WvJQOOYJPoK2KglGlSWUxDmrCJ-Jht-j5hxosCA3_6I","refresh-token":"eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiJ1MTExMSIsInJvbGUiOiJST0xFX1VTRVIiLCJpYXQiOjE3MjA2NjA0ODQsImV4cCI6MTgwNzA2MDQ4NH0.PseOmRiuj10gCWYJrOjtGxqWKSyhXRqKhITRFmcpruI"}
 

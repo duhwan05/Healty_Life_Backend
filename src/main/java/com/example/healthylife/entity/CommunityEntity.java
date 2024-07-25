@@ -9,6 +9,7 @@ import java.util.Date;
 @ToString
 @Entity
 @Getter
+@Setter
 @Table(name = "community")
 @NoArgsConstructor
 public class CommunityEntity implements Serializable {

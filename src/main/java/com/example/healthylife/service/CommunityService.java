@@ -2,11 +2,13 @@ package com.example.healthylife.service;
 
 
 import com.example.healthylife.entity.CommunityEntity;
+import com.example.healthylife.entity.UserEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
-@Service
+
 public interface CommunityService {
     //글전체조회
     List<CommunityEntity> communityList();
@@ -17,5 +19,6 @@ public interface CommunityService {
     //글삭제
     void deleteBySq(long communitySq);
 
-
+    // 게시물 아이디로 작성자 조회
+  //  Optional<UserEntity> findUserIdByCommunitySq(long communitySq);
 }

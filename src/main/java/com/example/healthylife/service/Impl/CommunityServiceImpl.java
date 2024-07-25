@@ -26,17 +26,20 @@ public class CommunityServiceImpl implements CommunityService {
     }
 
 
+    //커뮤니티 글 작성
     @Override
     public CommunityEntity registerCommunity(CommunityEntity communityEntity) {
         return communityRepository.save(communityEntity);
     }
 
+    //커뮤니티 글 수정
     @Override
     public CommunityEntity updateCommunity(CommunityEntity communityEntity) {
 
         return communityRepository.save(communityEntity);
     }
 
+    //커뮤니티 글 삭제
     @Override
     public void deleteBySq(long communitySq) {
 

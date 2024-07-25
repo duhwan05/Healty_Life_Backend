@@ -16,4 +16,6 @@ public interface CommunityService {
     CommunityEntity updateCommunity(CommunityEntity communityEntity);
     //글삭제
     void deleteBySq(long communitySq);
+
+
 }

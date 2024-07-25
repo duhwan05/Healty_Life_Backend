@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 @ToString
 @Entity
@@ -23,9 +24,23 @@ public class CommunityEntity implements Serializable {
     private String communityTitle;
 
     //글내용
-    @Column(name = "community_body",length = 500)
-    private String communityBody;
+    @Column(name = "community_contents",length = 500)
+    private String communityContents;
 
+    //커뮤니티 게시글 작성일
+    //communityCreated
+    @Column(name = "community_created", length = 150)
+    private Date communityCreated;
+
+    //커뮤니티 글 조회수
+    //communityCheck
+    @Column(name = "community_check", length = 200)
+    private long communityCheck;
+
+    //커뮤니티 글 추천수
+    //communityRecommend
+    @Column(name = "community_recommend",length = 200)
+    private long communityRecommend;
 
     //작성자
     @ManyToOne
@@ -34,10 +49,13 @@ public class CommunityEntity implements Serializable {
 
     //builder
     @Builder(toBuilder = true)
-    public CommunityEntity(long communitySq, String communityTitle, String communityBody, UserEntity user){
+    public CommunityEntity(long communitySq, String communityTitle, String communityContents, Date communityCreated, long communityCheck, long communityRecommend, UserEntity user){
         this.communitySq= communitySq;
         this.communityTitle = communityTitle;
-        this.communityBody = communityBody;
+        this.communityContents = communityContents;
+        this.communityCreated = communityCreated;
+        this.communityCheck = communityCheck;
+        this.communityRecommend = communityRecommend;
         this.user = user;
     }
 

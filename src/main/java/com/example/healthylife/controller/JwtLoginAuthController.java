@@ -21,7 +21,8 @@ import java.util.Map;
 @Slf4j
 @RequestMapping("/jwt")
 @RestController
-public class JwtAuthController {
+@ApiOperation("로그인 컨트롤러")
+public class JwtLoginAuthController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -33,7 +34,7 @@ public class JwtAuthController {
     private ObjectMapper objectMapper;
 
     @ApiOperation("로그인 컨트롤러")
-    @GetMapping("/authenticate")
+    @PostMapping("/authenticate")
     public ResponseEntity<String> authenticate(@RequestParam String username, @RequestParam String password){
         try {
             //사용자 이름(아이디)과 비번으로 인증

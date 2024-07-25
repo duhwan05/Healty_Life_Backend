@@ -25,15 +25,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
+//        http.authorizeRequests()
+//            .antMatchers(
+//                "/swagger-ui/**",
+//                "/swagger-resources/**",
+//                "/jwt/**",
+//                "/user/signup",
+//                "/v3/api-docs")
+//            .permitAll()
+//            .anyRequest().authenticated();
+
         http.authorizeRequests()
-            .antMatchers(
-                "/swagger-ui/**",
-                "/swagger-resources/**",
-                "/jwt/**",
-                "/user/signup",
-                "/v3/api-docs")
-            .permitAll()
-            .anyRequest().authenticated();
+                .anyRequest().permitAll();
 
         CharacterEncodingFilter encFilter = new CharacterEncodingFilter();
         encFilter.setEncoding("UTF-8");

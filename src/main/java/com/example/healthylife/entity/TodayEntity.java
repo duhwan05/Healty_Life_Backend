@@ -1,9 +1,6 @@
 package com.example.healthylife.entity;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,6 +9,7 @@ import java.util.Date;
 @ToString
 @Entity
 @Getter
+@Setter
 @Table(name = "today")
 @NoArgsConstructor
 public class TodayEntity implements Serializable {
@@ -40,6 +38,7 @@ public class TodayEntity implements Serializable {
     //오운완 게시물 작성 날짜
     //today_created
         @Column(name = "today_created",length = 150)
+        @Temporal(TemporalType.TIMESTAMP)
         private Date todayCreated;
 
 
@@ -59,4 +58,6 @@ public class TodayEntity implements Serializable {
             this.todayCreated = todayCreated;
             this.user = user;
         }
+
+
 }

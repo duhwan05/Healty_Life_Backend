@@ -30,6 +30,13 @@ public class CommunityController {
     }
 
 
+    //커뮤니티 단일조회 (userId가지고 내가 쓴 글 조회)
+    @ApiOperation(value = "커뮤니티 내가 쓴 글 조회")
+    @GetMapping("/myCommunityContents")
+    public List<CommunityEntity> myCommunityContentsList(@RequestParam String userId) {
+        return communityService.findMyContents(userId);
+    }
+
     @ApiOperation(value = "커뮤니티 글 작성")
     @PostMapping("/register")
     public CommunityEntity register(@RequestBody CommunityEntity communityEntity) {
@@ -49,4 +56,7 @@ public class CommunityController {
         communityService.deleteBySq(communitySq);
         return true;
     }
+
+
+    // 커뮤니티 글 조회수
 }

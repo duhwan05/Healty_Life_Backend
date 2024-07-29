@@ -15,4 +15,7 @@ public interface CommunityCommentsService {
 
     //댓글삭제
     void deleteBySq(long commentsSq);
+
+    //커뮤니티 내가 쓴 댓글
+    List<CommunityCommentsEntity> findMyCommunityComments(String userId);
 }

@@ -35,4 +35,10 @@ public class CommunityCommentsController {
         communityCommentsService.deleteBySq(commentsSq);
         return true;
     }
+
+    @ApiOperation(value = "커뮤니티 내가 쓴 댓글 조회")
+    @GetMapping("/myCommunityComments")
+    public List<CommunityCommentsEntity> myCommunityComments(@RequestParam String userId){
+        return communityCommentsService.findMyCommunityComments(userId);
+    }
 }

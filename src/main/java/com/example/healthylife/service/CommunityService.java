@@ -19,6 +19,6 @@ public interface CommunityService {
     //글삭제
     void deleteBySq(long communitySq);
 
-    // 게시물 아이디로 작성자 조회
-  //  Optional<UserEntity> findUserIdByCommunitySq(long communitySq);
+    List<CommunityEntity> findMyContents(String userId);
+
 }

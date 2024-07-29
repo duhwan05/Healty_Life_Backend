@@ -23,7 +23,6 @@ public interface CommunityRepository extends JpaRepository<CommunityEntity, Long
     @Query(value = "SELECT * FROM community " +
             "WHERE community_title = :param", nativeQuery = true)
     public CommunityEntity findMyStyleByNativeSQL(String param);
-
-    //게시물 아이디로 작성자 조회
-    Optional<UserEntity> findUserIdByCommunitySq(long communitySq);
+//내가 작성한 글 조회
+    List<CommunityEntity> findByUserUserId(String userId);
 }

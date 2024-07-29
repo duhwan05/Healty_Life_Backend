@@ -34,4 +34,9 @@ public class CommunityCommentsImpl implements CommunityCommentsService {
 
         communityCommentsRepository.deleteById(commentsSq);
     }
+
+    @Override
+    public List<CommunityCommentsEntity> findMyCommunityComments(String userId) {
+        return communityCommentsRepository.findByUserUserId(userId);
+    }
 }

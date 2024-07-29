@@ -8,11 +8,16 @@ public interface TodayService {
     //오운완 전체조회
     List<TodayEntity> todayList();
 
+    //오운완 내가 쓴 글 조회
+    List<TodayEntity> findMyTodayContents(String userId);
+
     //오운완 등록
     TodayEntity registerToday(TodayEntity todayEntity);
     //오운완 수정
     TodayEntity updateEntity(TodayEntity todayEntity);
     //오운완 삭제
     void deleteByTodaySq(long todaySq);
+
+
 
 }

@@ -2,9 +2,10 @@ package com.example.healthylife.controller;
 
 import com.example.healthylife.config.jwt.JwtUtil;
 import com.example.healthylife.entity.UserEntity;
-import com.example.healthylife.service.Impl.JwtAuthService;
+import com.example.healthylife.service.JwtAuthService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,19 +20,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @Slf4j
+@RequiredArgsConstructor
 @RequestMapping("/jwt")
 @RestController
 @ApiOperation("로그인 컨트롤러")
 public class JwtLoginAuthController {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
-    private JwtUtil jwtUtil;
-    @Autowired
-    private JwtAuthService jwtAuthService;
-    @Autowired
-    private ObjectMapper objectMapper;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
+    private final JwtAuthService jwtAuthService;
+    private final ObjectMapper objectMapper;
 
     @ApiOperation("로그인 컨트롤러")
     @PostMapping("/authenticate")

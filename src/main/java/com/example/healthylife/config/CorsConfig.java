@@ -1,6 +1,9 @@
 package com.example.healthylife.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -8,17 +11,17 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class CorsConfig {
 
     @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:3000",
-                                "https://trendy-healthy.store") // 허용할 도메인
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "HEAD")
-                        .allowedHeaders("*")
-                        .allowCredentials(true);
-            }
-        };
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.addAllowedOriginPattern("http://localhost:8081/swagger-ui/index.html"); // 특정 origin 허용
+        config.addAllowedOriginPattern("https://trendy-healthy-backend.store/swagger-ui/"); // 특정 origin 허용
+        config.addAllowedOriginPattern("http://localhost:3000");
+        config.addAllowedOriginPattern("https://trendy-healthy.store/");
+        config.addAllowedMethod("*"); // 모든 HTTP 메서드 허용
+        config.addAllowedHeader("*"); // 모든 헤더 허용
+        config.setAllowCredentials(true); // 자격 증명 허용
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
     }
 }

@@ -4,7 +4,6 @@ import com.example.healthylife.entity.TodayEntity;
 import com.example.healthylife.service.TodayService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

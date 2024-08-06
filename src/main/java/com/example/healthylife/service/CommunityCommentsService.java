@@ -1,21 +1,36 @@
 package com.example.healthylife.service;
 
 import com.example.healthylife.entity.CommunityCommentsEntity;
+import com.example.healthylife.repository.CommunityCommentsRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public interface CommunityCommentsService {
+public class CommunityCommentsService {
+    private final CommunityCommentsRepository communityCommentsRepository;
+
+    public CommunityCommentsService(CommunityCommentsRepository communityCommentsRepository){
+        this.communityCommentsRepository=communityCommentsRepository;
+    }
 
     //댓글 전체 리스트
-    List<CommunityCommentsEntity> communityCommentsList();
+    public List<CommunityCommentsEntity> communityCommentsList() {
+        return communityCommentsRepository.findAll();
+    }
+
     //댓글등록
-    CommunityCommentsEntity insertComments(CommunityCommentsEntity communityCommentsEntity);
+    public CommunityCommentsEntity insertComments(CommunityCommentsEntity communityCommentsEntity) {
+        return communityCommentsRepository.save(communityCommentsEntity);
+    }
 
     //댓글삭제
-    void deleteBySq(long commentsSq);
+    public void deleteBySq(long commentsSq) {
 
-    //커뮤니티 내가 쓴 댓글
-    List<CommunityCommentsEntity> findMyCommunityComments(String userId);
+        communityCommentsRepository.deleteById(commentsSq);
+    }
+
+    public List<CommunityCommentsEntity> findMyCommunityComments(String userId) {
+        return communityCommentsRepository.findByUserUserId(userId);
+    }
 }

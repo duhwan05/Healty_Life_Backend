@@ -3,10 +3,7 @@ package com.example.healthylife.controller;
 import com.example.healthylife.entity.CommunityEntity;
 import com.example.healthylife.service.CommunityService;
 import io.swagger.annotations.ApiOperation;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

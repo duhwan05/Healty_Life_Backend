@@ -15,7 +15,7 @@ public class CorsConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.addAllowedOriginPattern("http://localhost:8081/swagger-ui/index.html"); // 특정 origin 허용
-        config.addAllowedOriginPattern("https://trendy-healthy-backend.store/swagger-ui/"); // 특정 origin 허용
+        config.addAllowedOriginPattern("https://trendy-healthy-backend.store/swagger-ui/");
         config.addAllowedOriginPattern("http://localhost:3000");
         config.addAllowedOriginPattern("https://trendy-healthy.store/");
         config.addAllowedMethod("*"); // 모든 HTTP 메서드 허용

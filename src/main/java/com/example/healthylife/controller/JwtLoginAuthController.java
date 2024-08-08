@@ -63,7 +63,6 @@ public class JwtLoginAuthController {
         }
     }
 
-
 // 현재 사용하지 않음
 //    @GetMapping("/refresh")
 //    public ResponseEntity<String> refresh(@RequestParam("refresh-token") String refreshToken){

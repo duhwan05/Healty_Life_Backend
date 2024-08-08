@@ -19,13 +19,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    //회원 전체조회
-    @Transactional(readOnly = true)
-    public List<UserEntity> userList() {
-        return (List<UserEntity>) userRepository.findAll();
-    }
-
-    //회원 단일조회
+    // userId를 기준으로 사용자 조회
     public Optional<UserEntity> findUserById(String userId) {
         return userRepository.findByUserId(userId);
     }
@@ -38,33 +32,32 @@ public class UserService {
         return userRepository.save(userEntity);
     }
 
-    //회원 수정
+    // 회원 수정
     @Transactional
     public UserEntity updateUser(UserEntity userEntity) {
-        UserEntity user = userRepository.findById(userEntity.getUserSq()).orElseThrow(() -> new RuntimeException("User not found"));
-
-        UserEntity.UserEntityBuilder resultEntityBuilder = user.toBuilder();
-
+        Long userSq = userEntity.getUserSq();
+        UserEntity existingUser = userRepository.findById(userSq)
+                .orElseThrow(() -> new RuntimeException("유저를 찾을수 없습니다."));
+        
+        UserEntity.UserEntityBuilder resultEntityBuilder = existingUser.toBuilder();
+        //userDetail 변경하기
         if (Objects.nonNull(userEntity.getUserName()) && !"".equalsIgnoreCase(userEntity.getUserName())) {
             resultEntityBuilder.userName(userEntity.getUserName());
         }
-
         if (Objects.nonNull(userEntity.getUserEmail()) && !"".equalsIgnoreCase(userEntity.getUserEmail())) {
             resultEntityBuilder.userEmail(userEntity.getUserEmail());
         }
-
         if (Objects.nonNull(userEntity.getUserPw()) && !"".equalsIgnoreCase(userEntity.getUserPw())) {
             resultEntityBuilder.userPw(passwordEncoder.encode(userEntity.getUserPw()));
         }
-
-        UserEntity resultEntity = resultEntityBuilder.build();
-
-        return userRepository.save(resultEntity);
+        // 수정된 사용자 정보 저장
+        UserEntity updatedUser = resultEntityBuilder.build();
+        return userRepository.save(updatedUser);
     }
 
-    //회원 삭제
+    // 회원 삭제
     @Transactional
-    public void deleteUserBySq(long userSq) {
+    public void deleteUserBySq(Long userSq) {
         userRepository.deleteById(userSq);
     }
 }

@@ -2,6 +2,8 @@ package com.example.healthylife.config.jwt;
 
 import io.micrometer.core.instrument.util.StringUtils;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,45 +15,44 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Map;
-import java.util.Objects;
 
 // AbstractAuthenticationProcessingFilter 이걸 상속받는건 특정 URL에 대한 인증 처리를 담당하는 필터로 사용된다는 것임.
+//역할: HTTP 요청의 JWT 인증 처리
+@Slf4j
+@RequiredArgsConstructor
+public class JwtAuthenticationFilter extends GenericFilterBean {
 
-    public class JwtAuthenticationFilter extends GenericFilterBean {
+    private final JwtUtil jwtUtil;
 
-        //JWT 생성 및 검증
-        private JwtUtil jwtUtil = new JwtUtil("sklskljsklsjalkjklsjSKLSAKLJsklsklsjlksjsakljslkajsalksaksa",
-                10 * 60 * 1000, 24 * 60 * 60 * 1000);
+    //요청을 넘기는 역할을 하는 메소드
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
+        try {
+            restoreAuthentication((HttpServletRequest) request, (HttpServletResponse) response);
+            chain.doFilter(request, response);
+        } catch (AuthenticationException e) {
+            ((HttpServletResponse) response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Unauthorized");
+        }
+    }
 
-        public JwtAuthenticationFilter() {
-            super();
+    //헤더에서 JWT 토큰을 추츨하는 메소드
+    private void restoreAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException {
+        String jwtToken = jwtUtil.extractTokenFromHeader(request.getHeader("Authorization"));
+
+        if (StringUtils.isBlank(jwtToken)) {
+            log.warn("토큰이 없습니다.");
+            return;
         }
 
-
-            @Override
-            public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws IOException, ServletException {
-                restoreAuthentication((HttpServletRequest) request, (HttpServletResponse) response);
-                chain.doFilter(request, response);
-            }
-
-
-
-                private void restoreAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-                    // 요청 헤더에서 토큰을 추출  (header)"Authorization: Bearer {accessToken}"
-                    String jwtToken = jwtUtil.extractTokenFromHeader(request.getHeader("Authorization"));
-
-
-                        if (StringUtils.isBlank(jwtToken)) {
-                            return;
-                        }
-
-
-                    Authentication authentication = jwtUtil.getAuthentication(jwtToken);
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
-
-
+        if (jwtUtil.validateToken(jwtToken)) {
+            Authentication authentication = jwtUtil.getAuthentication(jwtToken);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        } else {
+            log.warn("유효하지 않은 토큰입니다.");
+            throw new AuthenticationException("유효하지 않은 토큰입니다.") {};
+        }
     }
 
 

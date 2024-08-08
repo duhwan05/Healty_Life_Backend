@@ -6,6 +6,11 @@ server:
     keep-alive-timeout: 65000ms  # Keep-Alive 타임아웃
     max-keep-alive-requests: 100  # 최대 Keep-Alive 요청 수
 
+jwt:
+  secret: "sklskljsklsjalkjklsjSKLSAKLJsklsklsjlksjsakljslkajsalksaksa"
+  accessTokenExpTime: 600000 # 10 minutes in milliseconds
+  refreshTokenExpTime: 86400000 # 24 hours in milliseconds
+
   #JDBC datasource
 #spring:
 #  datasource:

@@ -11,22 +11,19 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor //final 필드 초기화 생성자 자동생성
+@RequiredArgsConstructor
 public class MyUserDetailsService implements UserDetailsService {
     private final UserService userService;
 
-
     @Override
-    //username으로 사용자 한 명 가져옴(UserId)
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-        Optional<UserEntity> userEntityOptional = userService.findUserById(username);
+    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
+        // username을 기준으로 사용자 조회
+        Optional<UserEntity> userEntityOptional = userService.findUserById(userId);
         if (userEntityOptional.isEmpty()) {
             throw new UsernameNotFoundException("해당하는 유저가 없습니다.");
         }
 
         UserEntity userEntity = userEntityOptional.get();
-
-        return new MyUserDetails(userEntity);
+        return MyUserDetails.create(userEntity); // UserDetails 객체를 생성할 때 userEntity를 직접 전달
     }
 }

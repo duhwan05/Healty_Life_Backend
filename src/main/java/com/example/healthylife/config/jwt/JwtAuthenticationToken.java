@@ -5,6 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 
+//역할: JWT 기반 인증 토큰 (일단 사용안함)
 public class JwtAuthenticationToken extends AbstractAuthenticationToken {
 
     private String jsonWebToken;

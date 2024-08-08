@@ -31,7 +31,7 @@ public class SwaggerConfig {
                 .paths(PathSelectors.ant("/**"))
                 .build()
                 .pathMapping("/")
-                .host("localhost:8081")
+//                .host("localhost:8081")
                 .securityContexts(List.of(securityContext()))
                 .securitySchemes(List.of(apiKey()));
 

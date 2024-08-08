@@ -4,9 +4,12 @@ import com.example.healthylife.entity.CommunityEntity;
 import com.example.healthylife.service.CommunityService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RequestMapping("/community")
@@ -54,6 +57,27 @@ public class CommunityController {
         return true;
     }
 
+    @ApiOperation(value = "커뮤니티 단일조회")
+    @GetMapping("/communitySq")
+    public ResponseEntity<CommunityEntity> getCommunityBySq(@RequestParam Long communitySq) {
+        try {
+            Optional<CommunityEntity> community = communityService.findCommunityBySq(communitySq);
+            if (community.isPresent()) {
+                return new ResponseEntity<>(community.get(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            // 로그를 남기거나 필요한 조치를 취합니다
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     // 커뮤니티 글 조회수
+    @ApiOperation(value = "커뮤니티 글 추천")
+    @PostMapping("/recommend")
+    public ResponseEntity<Void> recommendCommunity(@RequestParam Long sq) {
+        communityService.incrementRecommend(sq);
+        return ResponseEntity.ok().build();
+    }
 }

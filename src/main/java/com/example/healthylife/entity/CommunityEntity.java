@@ -1,10 +1,12 @@
 package com.example.healthylife.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @ToString
 @Entity
@@ -47,6 +49,11 @@ public class CommunityEntity implements Serializable {
     @ManyToOne
     @JoinColumn(name = "user_sq")
     private UserEntity user;
+
+    //댓글
+    @JsonManagedReference
+    @OneToMany(mappedBy = "community", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CommunityCommentsEntity> comments;
 
     //builder
     @Builder(toBuilder = true)

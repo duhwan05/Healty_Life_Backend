@@ -33,4 +33,8 @@ public class CommunityCommentsService {
     public List<CommunityCommentsEntity> findMyCommunityComments(String userId) {
         return communityCommentsRepository.findByUserUserId(userId);
     }
+
+    public List<CommunityCommentsEntity> getCommentsByCommunitySq(Long communitySq) {
+        return communityCommentsRepository.findByCommunityCommunitySq(communitySq);
+    }
 }

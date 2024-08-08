@@ -9,4 +9,9 @@ import java.util.List;
 @Repository
 public interface CommunityCommentsRepository extends JpaRepository<CommunityCommentsEntity,Long> {
     List<CommunityCommentsEntity> findByUserUserId(String userId);
-    }
+
+    List<CommunityCommentsEntity> findByCommunityCommunitySq(Long communitySq);
+}
+
+
+

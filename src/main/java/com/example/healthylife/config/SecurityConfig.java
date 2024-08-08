@@ -28,12 +28,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
     }
 
-    //비밀번호 암호화 작업
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
     //AuthenticationManager를 빈으로 등록하게 해서 시큐리티가 인증 매니저를 할수 있게 한다.
     @Bean
     @Override

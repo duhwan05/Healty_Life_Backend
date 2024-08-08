@@ -1,5 +1,6 @@
 package com.example.healthylife.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -32,6 +33,7 @@ public class CommunityCommentsEntity implements Serializable {
     //게시글 넘버 시퀀스(foreign key)
     @ManyToOne
     @JoinColumn(name = "community_sq")
+    @JsonBackReference
     private CommunityEntity community;
 
 

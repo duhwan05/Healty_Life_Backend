@@ -1,5 +1,6 @@
 package com.example.healthylife.controller;
 
+import com.example.healthylife.config.jwt.JwtUtil;
 import com.example.healthylife.entity.CommunityEntity;
 import com.example.healthylife.service.CommunityService;
 import io.swagger.annotations.ApiOperation;
@@ -17,6 +18,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CommunityController {
     private final CommunityService communityService;
+    private final JwtUtil jwtUtil;
 
     @ApiOperation(value = "커뮤니티 글 전체 조회")
     @GetMapping("/all")
@@ -33,8 +35,18 @@ public class CommunityController {
     //커뮤니티 단일조회 (userId가지고 내가 쓴 글 조회)
     @ApiOperation(value = "커뮤니티 내가 쓴 글 조회")
     @GetMapping("/myCommunityContents")
-    public List<CommunityEntity> myCommunityContentsList(@RequestParam String userId) {
-        return communityService.findMyContents(userId);
+    public ResponseEntity<List<CommunityEntity>> myCommunityContentsList(@RequestHeader("Authorization") String authorizationHeader) {
+
+        String jwtToken = jwtUtil.extractTokenFromHeader(authorizationHeader);
+        if (jwtToken == null || !jwtUtil.validateToken(jwtToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        String userId = jwtUtil.getUserId(jwtToken);
+        List<CommunityEntity> communityEntities = communityService.findMyContents(userId);
+        if (communityEntities.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(communityEntities);
     }
 
     @ApiOperation(value = "커뮤니티 글 작성")

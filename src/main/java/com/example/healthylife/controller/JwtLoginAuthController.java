@@ -1,6 +1,7 @@
 package com.example.healthylife.controller;
 
 import com.example.healthylife.config.jwt.JwtUtil;
+import com.example.healthylife.dto.LoginRequest;
 import com.example.healthylife.entity.UserEntity;
 import com.example.healthylife.service.JwtAuthService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,44 +32,33 @@ public class JwtLoginAuthController {
     private final JwtAuthService jwtAuthService;
     private final ObjectMapper objectMapper;
 
-    @ApiOperation("로그인 컨트롤러")
+    @ApiOperation("로그인")
     @PostMapping("/authenticate")
-    public ResponseEntity<String> authenticate(@RequestParam String username, @RequestParam String password){
+    public ResponseEntity<String> authenticate(@RequestBody LoginRequest loginRequest){
         try {
-            //사용자 이름(아이디)과 비번으로 인증
+            // 사용자 이름(아이디)과 비밀번호로 인증
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(username, password));
-
-            //인증 성공하면 JWT 토큰 생성
-            //accessToken 생성
+                    new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+            // 인증 성공하면 JWT 토큰 생성
             String accessToken = jwtUtil.createAccessToken(UserEntity.builder()
                     .userId(authentication.getName())
                     .build());
-            //refreshToken 생성
             String refreshToken = jwtUtil.createRefreshToken(UserEntity.builder()
                     .userId(authentication.getName())
                     .build());
-            jwtAuthService.addRefreshToken(refreshToken, username);
-
-            Map result = Map.of("access-token", accessToken,
+            jwtAuthService.addRefreshToken(refreshToken, loginRequest.getUsername());
+            Map<String, String> result = Map.of("access-token", accessToken,
                     "refresh-token", refreshToken);
-
-            //생성된 토큰을 ResponseEntity로 반환
             return ResponseEntity.ok()
                     .body(objectMapper.writeValueAsString(result));
         } catch (UsernameNotFoundException | BadCredentialsException exception){
-            //사용자 이름이나 비번이 다른 경우 예외 처리
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body("Invalid username or password");
-
-            //todo 아이디 or 비번 따로따로 바꾸고 싶으면 catch 하나 더 주기
+                    .body("아이디/비밀번호가 맞지 않습니다.");
         } catch (Exception e) {
-            log.error("authenticate failed! - username: {}, password: {}", username, password, e);
+            log.error("authenticate failed! - username: {}, password: {}", loginRequest.getUsername(), loginRequest.getPassword(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Exception : " + e.getMessage());
         }
-
-
     }
 
     @GetMapping("/refresh")

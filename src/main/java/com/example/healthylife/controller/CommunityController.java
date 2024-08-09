@@ -70,8 +70,8 @@ public class CommunityController {
     }
 
     @ApiOperation(value = "커뮤니티 단일조회")
-    @GetMapping("/communitySq/{community}")
-    public ResponseEntity<CommunityEntity> getCommunityBySq(@PathVariable Long communitySq) {
+    @GetMapping("/communityDetail/{communitySq}")
+    public ResponseEntity<CommunityEntity> getCommunityBySq(@PathVariable("communitySq") Long communitySq) {
         try {
             Optional<CommunityEntity> community = communityService.findCommunityBySq(communitySq);
             if (community.isPresent()) {
@@ -88,7 +88,7 @@ public class CommunityController {
     // 커뮤니티 글 조회수
     @ApiOperation(value = "커뮤니티 글 추천")
     @PostMapping("/view/{sq}")
-    public ResponseEntity<Void> Communityview(@PathVariable Long sq) {
+    public ResponseEntity<Void> Communityview(@PathVariable("sq") Long sq) {
         communityService.incrementview(sq);
         return ResponseEntity.ok().build();
     }

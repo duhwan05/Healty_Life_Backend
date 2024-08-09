@@ -36,9 +36,9 @@ public class CommunityEntity implements Serializable {
     private Date communityCreated;
 
     //커뮤니티 글 조회수
-    //communityCheck
-    @Column(name = "community_check", length = 200)
-    private long communityCheck;
+    //communityview
+    @Column(name = "communityview", length = 200 )
+    private int communityview;
 
     //커뮤니티 글 추천수
     //communityRecommend
@@ -57,12 +57,12 @@ public class CommunityEntity implements Serializable {
 
     //builder
     @Builder(toBuilder = true)
-    public CommunityEntity(long communitySq, String communityTitle, String communityContents, Date communityCreated, long communityCheck, long communityRecommend, UserEntity user){
+    public CommunityEntity(long communitySq, String communityTitle, String communityContents, Date communityCreated, int communityview, long communityRecommend, UserEntity user){
         this.communitySq= communitySq;
         this.communityTitle = communityTitle;
         this.communityContents = communityContents;
         this.communityCreated = communityCreated;
-        this.communityCheck = communityCheck;
+        this.communityview = communityview;
         this.communityRecommend = communityRecommend;
         this.user = user;
     }

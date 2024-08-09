@@ -20,7 +20,7 @@ import java.io.IOException;
 //역할: HTTP 요청의 JWT 인증 처리
 @Slf4j
 @RequiredArgsConstructor
-public class JwtAuthenticationFilter extends GenericFilterBean {
+public class    JwtAuthenticationFilter extends GenericFilterBean {
 
     private final JwtUtil jwtUtil;
 

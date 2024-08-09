@@ -60,10 +60,10 @@ public class CommunityService {
         return community;
     }
 
-    // 커뮤니티 추천
+    // 커뮤니티 조회수
     @Transactional
-    public void incrementRecommend(Long communitySq) {
-        communityRepository.incrementCommunityRecommend(communitySq);
+    public void incrementview(Long communitySq) {
+        communityRepository.incrementCommunityview(communitySq);
     }
 
 

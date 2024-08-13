@@ -27,7 +27,7 @@ public class CommunityEntity implements Serializable {
     private String communityTitle;
 
     //글내용
-    @Column(name = "community_contents",length = 500)
+    @Column(name = "community_contents",length = 1000)
     private String communityContents;
 
     //커뮤니티 게시글 작성일
@@ -37,7 +37,7 @@ public class CommunityEntity implements Serializable {
 
     //커뮤니티 글 조회수
     //communityview
-    @Column(name = "communityview", length = 200 )
+    @Column(name = "community_view", length = 200 )
     private int communityview;
 
     //커뮤니티 글 추천수
@@ -67,7 +67,14 @@ public class CommunityEntity implements Serializable {
         this.user = user;
     }
 
-
+    // 추천수
+    public void toggleRecommendation(boolean currentlyRecommended) {
+        if (currentlyRecommended) {
+            this.communityRecommend--;
+        } else {
+            this.communityRecommend++;
+        }
+    }
 
 
 }

@@ -20,36 +20,18 @@ import java.util.Set;
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
+
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.OAS_30)
-//                .consumes(getConsumeContentTypes())
-//                .produces(getProduceContentTypes())
-                .apiInfo(getApiInfo())
+                .useDefaultResponseMessages(false)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.example.healthylife"))
-                .paths(PathSelectors.ant("/**"))
+                .paths(PathSelectors.any())
                 .build()
-                .pathMapping("/")
-//                .host("localhost:8081")
-                .securityContexts(List.of(securityContext()))
-                .securitySchemes(List.of(apiKey()));
-
+                .apiInfo(getApiInfo());
 
     }
-
-//    private Set<String> getConsumeContentTypes() {
-//        Set<String> consumes = new HashSet<>();
-//        consumes.add("application/json;charset=UTF-8");
-//        consumes.add("application/x-www-form-urlencoded");
-//        return consumes;
-//    }
-//
-//    private Set<String> getProduceContentTypes() {
-//        Set<String> produces = new HashSet<>();
-//        produces.add("application/json;charset=UTF-8");
-//        return produces;
-//    }
 
     private ApiInfo getApiInfo() {
         return new ApiInfoBuilder()
@@ -59,20 +41,6 @@ public class SwaggerConfig {
                 .version("1.0")
                 .build();
     }
-    private SecurityScheme apiKey() {
-        return new ApiKey("Authorization", "Authorization", "header");
-    }
 
-    private SecurityContext securityContext() {
-        return SecurityContext.builder()
-                .securityReferences(defaultAuth())
-                .build();
-    }
-    private List<SecurityReference> defaultAuth() {
-        AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
-        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
-        authorizationScopes[0] = authorizationScope;
-        return List.of(new SecurityReference("Authorization", authorizationScopes));
-    }
 
 }

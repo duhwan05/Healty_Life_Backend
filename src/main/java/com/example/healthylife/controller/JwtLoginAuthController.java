@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -61,38 +60,30 @@ public class JwtLoginAuthController {
         }
     }
 
-    @GetMapping("/refresh")
-    public ResponseEntity<String> refresh(@RequestParam("refresh-token") String refreshToken){
-        try {
-            String accessToken = jwtAuthService.refresh(refreshToken);
-            //사용자 이름(아이디)과 비번으로 인증
+// 현재 사용안함
+//    @GetMapping("/refresh")
+//    public ResponseEntity<String> refresh(@RequestParam("refresh-token") String refreshToken){
+//        try {
+//            String accessToken = jwtAuthService.refresh(refreshToken);
+//            //사용자 이름(아이디)과 비번으로 인증
+//
+//
+//            Map result = Map.of("access-token", accessToken,
+//                    "refresh-token", refreshToken);
+//
+//            //생성된 토큰을 ResponseEntity로 반환
+//            return ResponseEntity.ok()
+//                    .body(objectMapper.writeValueAsString(result));
+//        } catch (Exception e) {
+//            log.error("refresh failed! - refresh-token: {}", refreshToken, e);
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                    .body("Exception : " + e.getMessage());
+//        }
+//
+//    }
 
 
-            Map result = Map.of("access-token", accessToken,
-                    "refresh-token", refreshToken);
 
-            //생성된 토큰을 ResponseEntity로 반환
-            return ResponseEntity.ok()
-                    .body(objectMapper.writeValueAsString(result));
-        } catch (Exception e) {
-            log.error("refresh failed! - refresh-token: {}", refreshToken, e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Exception : " + e.getMessage());
-        }
-
-    }
-
-
-    @ApiOperation("로그아웃 컨트롤러")
-    @GetMapping("/logout")
-    public ResponseEntity<String> logout(@RequestParam("username") String username) {
-        // 클라이언트 측에서 토큰을 삭제하도록 처리
-//        response.setHeader("Set-Cookie", "accessToken=; HttpOnly; Path=/; Max-Age=0");
-//        response.setHeader("Set-Cookie", "refreshToken=; HttpOnly; Path=/; Max-Age=0");
-        jwtAuthService.logout(username);
-
-        return ResponseEntity.ok().body("Logout Successful");
-    }
 
 
 }

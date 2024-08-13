@@ -17,7 +17,6 @@ import java.util.Optional;
 public class CommunityService {
 
     private final CommunityRepository communityRepository;
-    private final UserRepository userRepository;
     private final CommunityCommentsService communityCommentsService;
 
 
@@ -26,26 +25,23 @@ public class CommunityService {
         return communityRepository.findAll();
     }
 
-
     //커뮤니티 글 작성
     public CommunityEntity registerCommunity(CommunityEntity communityEntity) {
         return communityRepository.save(communityEntity);
     }
 
-
     //커뮤니티 글 수정
     @Transactional
     public CommunityEntity updateCommunity(CommunityEntity communityEntity) {
-
         return communityRepository.save(communityEntity);
     }
 
     //커뮤니티 글 삭제
     public void deleteBySq(long communitySq) {
-
         communityRepository.deleteById(communitySq);
     }
 
+    //커뮤니티 내가 쓴글 조회
     public List<CommunityEntity> findMyContents(String userId) {
         return communityRepository.findByUserUserId(userId);
     }
@@ -60,6 +56,18 @@ public class CommunityService {
         return community;
     }
 
+    //커뮤니티 추천수
+    @Transactional
+    public long toggleRecommendation(Long sq) {
+        CommunityEntity community = communityRepository.findById(sq)
+                .orElseThrow(() -> new RuntimeException("커뮤니티가 없습니다."));
+
+        boolean isRecommended = community.getCommunityRecommend() > 0;
+        community.toggleRecommendation(isRecommended);
+        CommunityEntity updatedCommunity = communityRepository.save(community);
+        return updatedCommunity.getCommunityRecommend();
+    }
+
     // 커뮤니티 조회수
     @Transactional
     public void incrementview(Long communitySq) {
@@ -68,16 +76,4 @@ public class CommunityService {
 
 
 }
-
-
-    //커뮤니티 내가 쓴 글 조회
-//    @Override
-//    public List<CommunityEntity> findMyContents(long userSq) {
-//        return communityRepository.findByUserUserId(userSq);
-//    }
-
-
-
-
-
 

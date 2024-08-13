@@ -23,16 +23,10 @@ public class CommunityController {
     @ApiOperation(value = "커뮤니티 글 전체 조회")
     @GetMapping("/all")
     public List<CommunityEntity> communityList() {
-        // validate
-        // (http)param binding
-        // service call
         List<CommunityEntity> communityEntities = communityService.communityList();
-        // return result
         return communityEntities;
     }
 
-
-    //커뮤니티 단일조회 (userId가지고 내가 쓴 글 조회)
     @ApiOperation(value = "커뮤니티 내가 쓴 글 조회")
     @GetMapping("/myCommunityContents")
     public ResponseEntity<List<CommunityEntity>> myCommunityContentsList(@RequestHeader("Authorization") String authorizationHeader) {
@@ -56,20 +50,19 @@ public class CommunityController {
     }
 
     @ApiOperation(value = "커뮤니티 글 수정")
-    @PostMapping("/update")
+    @PutMapping("/update")
     public CommunityEntity update(@RequestBody CommunityEntity communityEntity) {
         return communityService.updateCommunity(communityEntity);
     }
 
-
     @ApiOperation(value = "커뮤니티 글 삭제")
-    @PostMapping("/delete")
-    public Boolean delete(@RequestParam long communitySq) {
+    @DeleteMapping("/delete/{communitySq}")
+    public ResponseEntity<Void> delete(@PathVariable("communitySq") Long communitySq) {
         communityService.deleteBySq(communitySq);
-        return true;
+        return ResponseEntity.noContent().build();
     }
 
-    @ApiOperation(value = "커뮤니티 단일조회")
+    @ApiOperation(value = "커뮤니티 상세보기")
     @GetMapping("/communityDetail/{communitySq}")
     public ResponseEntity<CommunityEntity> getCommunityBySq(@PathVariable("communitySq") Long communitySq) {
         try {
@@ -80,13 +73,18 @@ public class CommunityController {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
         } catch (Exception e) {
-            // 로그를 남기거나 필요한 조치를 취합니다
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    // 커뮤니티 글 조회수
-    @ApiOperation(value = "커뮤니티 글 추천")
+    @ApiOperation(value = "커뮤니티 글 추천수")
+    @PostMapping("/recommend/{sq}")
+    public ResponseEntity<?> communityRecommend(@PathVariable("sq") Long sq) {
+        long updatedCount = communityService.toggleRecommendation(sq);
+        return ResponseEntity.ok(updatedCount);
+    }
+
+    @ApiOperation(value = "커뮤니티 글 조회수")
     @PostMapping("/view/{sq}")
     public ResponseEntity<Void> Communityview(@PathVariable("sq") Long sq) {
         communityService.incrementview(sq);

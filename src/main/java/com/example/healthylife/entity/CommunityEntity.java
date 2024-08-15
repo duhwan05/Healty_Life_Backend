@@ -67,12 +67,15 @@ public class CommunityEntity implements Serializable {
         this.user = user;
     }
 
-    // 추천수
-    public void toggleRecommendation(boolean currentlyRecommended) {
-        if (currentlyRecommended) {
+    // 추천수 증가 메서드
+    public void incrementRecommendationCount() {
+        this.communityRecommend++;
+    }
+
+    // 추천수 감소 메서드
+    public void decrementRecommendationCount() {
+        if (this.communityRecommend > 0) {
             this.communityRecommend--;
-        } else {
-            this.communityRecommend++;
         }
     }
 

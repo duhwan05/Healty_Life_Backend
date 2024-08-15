@@ -1,8 +1,7 @@
-package com.example.healthylife.config;
+package com.example.healthylife.config.security;
 
 import com.example.healthylife.config.jwt.JwtAuthenticationFilter;
 import com.example.healthylife.config.jwt.JwtUtil;
-import com.example.healthylife.config.security.MyUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,7 +24,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/user/userinfo", "/user/userupdate").authenticated()
+                .antMatchers("/community/register", "/community/update", "/community/delete/**","/community/recommend/**","/community/myCommunityContents").authenticated()
+                .antMatchers("/user/one","/user/delete","/user/update").authenticated()
                 .anyRequest().permitAll()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
@@ -39,6 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         // DaoAuthenticationProvider를 설정하여 사용자 세부 정보와 비밀번호 암호화 설정을 Spring Security에 통합
@@ -47,4 +48,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         authProvider.setPasswordEncoder(passwordEncoder); // 비밀번호 암호화 설정
         return authProvider;
     }
+
+
 }

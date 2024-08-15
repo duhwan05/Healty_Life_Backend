@@ -48,8 +48,14 @@ public class UserService {
         if (Objects.nonNull(userEntity.getUserEmail()) && !"".equalsIgnoreCase(userEntity.getUserEmail())) {
             resultEntityBuilder.userEmail(userEntity.getUserEmail());
         }
-        if (Objects.nonNull(userEntity.getUserPw()) && !"".equalsIgnoreCase(userEntity.getUserPw())) {
-            resultEntityBuilder.userPw(passwordEncoder.encode(userEntity.getUserPw()));
+        if (Objects.nonNull(userEntity.getUserPhone()) && !"".equalsIgnoreCase(userEntity.getUserPhone())) {
+            resultEntityBuilder.userPhone(userEntity.getUserPhone());
+        }
+        if (Objects.nonNull(userEntity.getUserAddress()) && !"".equalsIgnoreCase(userEntity.getUserAddress())) {
+            resultEntityBuilder.userAddress(userEntity.getUserAddress());
+        }
+        if (userEntity.getUserAge() != null) {  // userAge는 long이므로 null 체크가 필요 없으나, valid value check
+            resultEntityBuilder.userAge(userEntity.getUserAge());
         }
         // 수정된 사용자 정보 저장
         UserEntity updatedUser = resultEntityBuilder.build();

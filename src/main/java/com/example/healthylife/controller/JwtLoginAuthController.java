@@ -28,16 +28,15 @@ public class JwtLoginAuthController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
-    private final JwtAuthService jwtAuthService;
     private final ObjectMapper objectMapper;
 
     @ApiOperation("로그인")
     @PostMapping("/authenticate")
-    public ResponseEntity<String> authenticate(@RequestBody LoginRequest loginRequest){
+    public ResponseEntity<String> authenticate(@RequestBody LoginRequest loginRequest) {
         try {
             // 사용자 이름(아이디)과 비밀번호로 인증
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+                    new UsernamePasswordAuthenticationToken(loginRequest.getUserId(), loginRequest.getPassword()));
             // 인증 성공하면 JWT 토큰 생성
             String accessToken = jwtUtil.createAccessToken(UserEntity.builder()
                     .userId(authentication.getName())
@@ -45,20 +44,23 @@ public class JwtLoginAuthController {
             String refreshToken = jwtUtil.createRefreshToken(UserEntity.builder()
                     .userId(authentication.getName())
                     .build());
-            jwtAuthService.addRefreshToken(refreshToken, loginRequest.getUsername());
-            Map<String, String> result = Map.of("access-token", accessToken,
-                    "refresh-token", refreshToken);
+            Map<String, String> result = Map.of(
+                    "access-token", accessToken,
+                    "refresh-token", refreshToken,
+                    "userId", authentication.getName()
+            );
             return ResponseEntity.ok()
                     .body(objectMapper.writeValueAsString(result));
-        } catch (UsernameNotFoundException | BadCredentialsException exception){
+        } catch (UsernameNotFoundException | BadCredentialsException exception) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body("아이디/비밀번호가 맞지 않습니다.");
         } catch (Exception e) {
-            log.error("authenticate failed! - username: {}, password: {}", loginRequest.getUsername(), loginRequest.getPassword(), e);
+            log.error("authenticate failed! - username: {}, password: {}", loginRequest.getUserId(), loginRequest.getPassword(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Exception : " + e.getMessage());
         }
     }
+
 
 // 현재 사용안함
 //    @GetMapping("/refresh")

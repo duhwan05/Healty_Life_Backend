@@ -15,6 +15,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
+
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -26,7 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .cors()
+                .cors().configurationSource(corsConfigurationSource()) // CORS 설정 추가
                 .and()
                 .authorizeRequests()
                 .antMatchers("/community/register", "/community/update", "/community/delete/**","/community/recommend/**","/community/myCommunityContents").authenticated()
@@ -36,6 +38,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
     }
 
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOriginPatterns(Arrays.asList("http://localhost:8081", "https://trendy-healthy-backend.store", "https://trendy-healthy.store")); // 원본 설정
+        configuration.setAllowedMethods(Arrays.asList("*")); // 모든 메서드 허용
+        configuration.setAllowedHeaders(Arrays.asList("*")); // 모든 헤더 허용
+        configuration.setAllowCredentials(true); // 자격 증명 허용
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
     //AuthenticationManager를 빈으로 등록하게 해서 시큐리티가 인증 매니저를 할수 있게 한다.
     @Bean
     @Override
@@ -43,7 +58,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // AuthenticationManager를 빈으로 등록하여 인증 관련 작업을 수행할 수 있도록 설정
         return super.authenticationManagerBean();
     }
-
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {

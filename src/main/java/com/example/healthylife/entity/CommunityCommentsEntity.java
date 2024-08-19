@@ -10,6 +10,7 @@ import java.util.Date;
 @ToString
 @Entity
 @Getter
+@Setter
 @Table(name = "community_comments")
 @NoArgsConstructor
 public class CommunityCommentsEntity implements Serializable {
@@ -52,14 +53,5 @@ public class CommunityCommentsEntity implements Serializable {
         this.community = community;
         this.user = user;
     }
-
-
-    //
-    //예시 데이터 여러개 넣기(반복으로 아무거나)
-    //테이블 만들기
-    //controller에 crud
-    //자유게시판 형식
-    //글제목,작성자,작성날짜,글내용,댓글
-    //글전체조회,키워드검색
 
 }

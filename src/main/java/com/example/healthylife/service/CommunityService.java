@@ -113,7 +113,6 @@ public class CommunityService {
         return communityRecommendRepository.existsByCommunityAndUser(community, user);
     }
 
-
     // 커뮤니티 조회수
     @Transactional
     public void incrementview(Long communitySq) {

@@ -13,4 +13,6 @@ public interface TodayCommentsRepository extends JpaRepository<TodayCommentsEnti
 
     //내가 작성한 글 조회하(유저아이디로)
     List<TodayCommentsEntity> findByUserUserId(String userId);
+
+    List<TodayCommentsEntity> findByTodayEntity_todaySq(long todaySq);
 }

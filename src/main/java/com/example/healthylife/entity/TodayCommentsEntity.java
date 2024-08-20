@@ -1,9 +1,7 @@
 package com.example.healthylife.entity;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,6 +10,7 @@ import java.util.Date;
 @ToString
 @Entity
 @Getter
+@Setter
 @Table(name = "today_comments")
 @NoArgsConstructor
 public class TodayCommentsEntity implements Serializable {
@@ -32,6 +31,7 @@ public class TodayCommentsEntity implements Serializable {
     //게시글 넘버 시퀀스(foreign key)
     @ManyToOne
     @JoinColumn(name = "today_sq")
+    @JsonBackReference
     private TodayEntity todayEntity;
 
     //작성자
@@ -52,18 +52,5 @@ public class TodayCommentsEntity implements Serializable {
         this.todayEntity = todayEntity;
         this.user = user;
     }
-
-
-    //
-    //예시 데이터 여러개 넣기(반복으로 아무거나)
-    //테이블 만들기
-    //controller에 crud
-    //자유게시판 형식
-    //글제목,작성자,작성날짜,글내용,댓글
-    //글전체조회,키워드검색
-
-
-
-
 
 }

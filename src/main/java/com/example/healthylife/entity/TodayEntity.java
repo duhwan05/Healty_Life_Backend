@@ -1,10 +1,12 @@
 package com.example.healthylife.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @ToString
 @Entity
@@ -14,11 +16,6 @@ import java.util.Date;
 @NoArgsConstructor
 public class TodayEntity implements Serializable {
 
-    //회원 아이디(유저 참조)
-    //오운완 시퀀스
-    //오운완 글제목
-    //오운완 글내용
-    //오운완 작성날짜
 
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
@@ -47,16 +44,25 @@ public class TodayEntity implements Serializable {
         @JoinColumn(name = "user_sq")
         private UserEntity user;
 
+        //댓글
+        @JsonManagedReference
+        @OneToMany(mappedBy = "todayEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+        private List<TodayCommentsEntity> comments;
+
+        @Column(name = "image_url")
+        private String imageurl;
+
        // builder
         @Builder(toBuilder = true)
         public TodayEntity(long todaySq, String todayContents,
                                   long todayHearts, Date todayCreated,
-                                   UserEntity user){
+                                   UserEntity user, String imageurl){
             this.todaySq = todaySq;
             this.todayContents = todayContents;
             this.todayHearts = todayHearts;
             this.todayCreated = todayCreated;
             this.user = user;
+            this.imageurl = imageurl;
         }
 
 

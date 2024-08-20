@@ -51,6 +51,9 @@ public class CommunityService {
         if (updatedCommunityEntity.getCommunityContents() != null) {
             existingCommunity.setCommunityContents(updatedCommunityEntity.getCommunityContents());
         }
+        if (updatedCommunityEntity.getCommunityCreated() != null) {
+            existingCommunity.setCommunityCreated(updatedCommunityEntity.getCommunityCreated());
+        }
         return communityRepository.save(existingCommunity);
     }
 

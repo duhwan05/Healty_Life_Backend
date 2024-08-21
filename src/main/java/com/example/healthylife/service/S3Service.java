@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectResponse;
 
@@ -22,6 +23,7 @@ public class S3Service {
 
     private final String bucketName = "today-image1";
 
+    // 파일 업로드
     public String uploadFileToS3(MultipartFile file) {
         String fileName = file.getOriginalFilename();
 
@@ -39,6 +41,18 @@ public class S3Service {
 
         } catch (IOException e) {
             throw new RuntimeException("S3 파일 업로드 실패", e);
+        }
+    }
+    
+    // 파일 삭제
+    public void deleteFileFromS3(String fileName) {
+        try {
+            s3Client.deleteObject(DeleteObjectRequest.builder()
+                    .bucket(bucketName)
+                    .key(fileName)
+                    .build());
+        } catch (Exception e) {
+            throw new RuntimeException("S3 파일 삭제 실패", e);
         }
     }
 

@@ -25,12 +25,13 @@ public class S3Service {
 
     // 파일 업로드
     public String uploadFileToS3(MultipartFile file) {
-        String fileName = file.getOriginalFilename();
+        String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
 
         try {
             PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                     .bucket(bucketName)
                     .key(fileName)
+                    .contentType(file.getContentType()) // Content-Type 설정
                     .build();
 
             PutObjectResponse putObjectResponse = s3Client.putObject(putObjectRequest,
@@ -40,9 +41,10 @@ public class S3Service {
             return "https://" + bucketName + ".s3.amazonaws.com/" + fileName;
 
         } catch (IOException e) {
-            throw new RuntimeException("S3 파일 업로드 실패", e);
+            throw new RuntimeException("S3 파일 업로드 실패: " + e.getMessage(), e);
         }
     }
+
     
     // 파일 삭제
     public void deleteFileFromS3(String fileName) {

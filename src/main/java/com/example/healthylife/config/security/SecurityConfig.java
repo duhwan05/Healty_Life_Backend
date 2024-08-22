@@ -33,6 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/community/register", "/community/update", "/community/delete/**","/community/recommend/**","/community/myCommunityContents").authenticated()
                 .antMatchers("/user/one","/user/delete","/user/update").authenticated()
+                .antMatchers("/today/create","/today/myTodayContents","/today/update/**","/today/delete/**","/today/todayDetail/**").authenticated()
                 .anyRequest().permitAll()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);

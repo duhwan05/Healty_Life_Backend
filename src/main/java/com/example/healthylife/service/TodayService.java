@@ -81,7 +81,6 @@ todayRepository.deleteById(todaySq);
                 String existingFileName = existingImageUrl.substring(existingImageUrl.lastIndexOf('/') + 1);
                 s3Service.deleteFileFromS3(existingFileName);
             }
-
             // 새로운 이미지 업로드
             String newImageUrl = s3Service.uploadFileToS3(file);
             existingTodayEntity.setImageurl(newImageUrl);

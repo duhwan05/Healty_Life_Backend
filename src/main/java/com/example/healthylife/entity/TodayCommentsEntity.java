@@ -39,9 +39,6 @@ public class TodayCommentsEntity implements Serializable {
     @JoinColumn(name = "user_sq")
     private UserEntity user;
 
-
-
-
     //builder
     @Builder(toBuilder = true)
     public TodayCommentsEntity(long todayCommentsSq, String todayCommentsContents, Date todayCommentsCreated,

@@ -17,7 +17,7 @@ public class CommunityCommentsService {
     private final CommunityCommentsRepository communityCommentsRepository;
     private final UserRepository userRepository;
 
-    // 댓글 작성
+    // 커뮤니티 댓글 작성
     public CommunityCommentsEntity insertComments(CommunityCommentsEntity communityCommentsEntity, String userId) {
         UserEntity user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
@@ -25,7 +25,7 @@ public class CommunityCommentsService {
         return communityCommentsRepository.save(communityCommentsEntity);
     }
 
-    // 댓글 수정
+    // 커뮤니티 댓글 수정
     public CommunityCommentsEntity updateComments(Long commentsSq, CommunityCommentsEntity updatedCommunityCommentsEntity, String userId) {
         CommunityCommentsEntity existingComment = communityCommentsRepository.findById(commentsSq)
                 .orElseThrow(() -> new RuntimeException("댓글을 찾을 수 없습니다."));
@@ -51,11 +51,10 @@ public class CommunityCommentsService {
         if (!existingComment.getUser().getUserId().equals(userId)) {
             throw new AccessDeniedException("해당 댓글을 삭제할 권한이 없습니다.");
         }
-
         communityCommentsRepository.delete(existingComment);
     }
 
-
+    // 추후 리팩토링 시 삭제예정
     public List<CommunityCommentsEntity> getCommentsByCommunitySq(Long communitySq) {
         return communityCommentsRepository.findByCommunityCommunitySq(communitySq);
     }

@@ -27,7 +27,7 @@ public class TodayCommentsController {
     }
 
     @ApiOperation(value = "오운완 댓글 수정")
-    @PostMapping("/update")
+    @PutMapping("/update")
     public ResponseEntity<TodayCommentsEntity> todayCommentsUpdate(@RequestBody TodayCommentsEntity updateTodayCommentsEntity, Authentication authentication){
         String userId = authentication.getName();
         try {
@@ -45,7 +45,7 @@ public class TodayCommentsController {
     }
 
     @ApiOperation(value = "오운완 댓글 삭제")
-    @PostMapping("/delete/{todayCommentSq}")
+    @DeleteMapping("/delete/{todayCommentSq}")
     public ResponseEntity<Void> todayCommentsDelete(@PathVariable("todayCommentSq") Long todayCommentsSq, Authentication authentication){
         String userId =  authentication.getName();
 

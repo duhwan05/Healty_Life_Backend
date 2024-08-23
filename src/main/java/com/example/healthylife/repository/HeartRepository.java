@@ -15,4 +15,6 @@ public interface HeartRepository extends JpaRepository<HeartEntity, Long> {
 
     @Query("SELECT COUNT(h) FROM HeartEntity h WHERE h.today = :today AND h.status = true")
     Long HeartCount(@Param("today") TodayEntity today);
+
+    boolean existsByUserAndToday(UserEntity user, TodayEntity today);
 }

@@ -64,5 +64,17 @@ public class TodayEntity implements Serializable {
         this.imageurl = imageurl;
     }
 
+    // 좋아요 수 증가
+    public void incrementLikeCount() {
+        this.todayHearts++;
+    }
+
+    // 좋아요 수 감소
+    public void decrementLikeCount() {
+        if (this.todayHearts > 0) {
+            this.todayHearts--;
+        }
+    }
+
 
 }

@@ -2,7 +2,6 @@ package com.example.healthylife.controller;
 
 import com.example.healthylife.config.jwt.JwtUtil;
 import com.example.healthylife.entity.CommunityEntity;
-import com.example.healthylife.entity.CommunityRecommendEntity;
 import com.example.healthylife.entity.UserEntity;
 import com.example.healthylife.repository.CommunityRecommendRepository;
 import com.example.healthylife.repository.CommunityRepository;
@@ -12,7 +11,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,8 +27,6 @@ public class CommunityController {
     private final CommunityService communityService;
     private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
-    private final CommunityRecommendRepository communityRecommendRepository;
-    private final CommunityRepository communityRepository;
 
     @ApiOperation(value = "커뮤니티 글 전체 조회")
     @GetMapping("/all")

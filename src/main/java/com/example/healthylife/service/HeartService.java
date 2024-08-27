@@ -57,6 +57,6 @@ public class HeartService {
 
         Optional<HeartEntity> heart = heartRepository.findByUserAndToday(user, today);
 
-        return heart.isPresent() && heart.get().getStatus();
+        return heart.map(HeartEntity::getStatus).orElse(false);
     }
 }

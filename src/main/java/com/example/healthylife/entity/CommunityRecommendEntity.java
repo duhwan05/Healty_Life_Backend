@@ -2,9 +2,6 @@ package com.example.healthylife.entity;
 
 import javax.persistence.*;
 
-import com.example.healthylife.entity.CommunityEntity;
-import com.example.healthylife.entity.UserEntity;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

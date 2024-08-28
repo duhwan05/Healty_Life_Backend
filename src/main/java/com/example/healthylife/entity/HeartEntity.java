@@ -3,22 +3,19 @@ package com.example.healthylife.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 
-@ToString
-@Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Getter
 @Entity
 @Table(name = "heart")
-public class HeartEntity {
+@NoArgsConstructor
+public class HeartEntity implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "heart_sq", unique = true, nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long heartSq;
 
     @ManyToOne
@@ -29,16 +26,14 @@ public class HeartEntity {
     @JoinColumn(name = "today_sq", nullable = false)
     private TodayEntity today;
 
-    @Column(name = "status", nullable = false)
-    private Boolean status;
-
     @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
 
-
-    // 상태를 토글하는 메서드
-    public void toggleStatus() {
-        this.status = !this.status;
+    public HeartEntity(TodayEntity today,UserEntity user) {
+        this.today = today;
+        this.user = user;
+        this.createdAt = LocalDateTime.now();
     }
+
 
 }

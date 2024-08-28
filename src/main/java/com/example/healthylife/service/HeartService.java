@@ -22,29 +22,28 @@ public class HeartService {
     private final UserRepository userRepository;
 
     @Transactional
-    public void toggleLike(UserEntity user, TodayEntity today) {
-        Optional<HeartEntity> existingHeart = heartRepository.findByUserAndToday(user, today);
-        if (existingHeart.isPresent()) {
-            HeartEntity heart = existingHeart.get();
-            heart.toggleStatus(); // 좋아요 상태를 토글
-            heartRepository.save(heart);
+    public long toggleLike(Long userSq, Long todaySq) {
+        TodayEntity today = todayRepository.findById(todaySq)
+                .orElseThrow(() -> new RuntimeException("투데이가 없습니다."));
+        UserEntity user = userRepository.findById(userSq)
+                .orElseThrow(() -> new RuntimeException("유저가 없습니다."));
 
-            if (heart.getStatus()) {
-                today.incrementLikeCount(); // 좋아요 수 증가
-            } else {
-                today.decrementLikeCount(); // 좋아요 수 감소
-            }
+        //찜 여부 확인
+        boolean alreadyHeart = heartRepository.existsByUserAndToday(user,today);
+
+        if(alreadyHeart) {
+            HeartEntity heart = heartRepository.findByUserAndToday(user,today)
+                    .orElseThrow(() -> new RuntimeException("추천 기록이 없습니다."));
+            heartRepository.delete(heart);
+            today.decrementLikeCount();
         } else {
-            HeartEntity heart = HeartEntity.builder()
-                    .user(user)
-                    .today(today)
-                    .status(true)
-                    .createdAt(LocalDateTime.now())
-                    .build();
-            heartRepository.save(heart);
-            today.incrementLikeCount();
+          HeartEntity heart = new HeartEntity(today,user);
+          heartRepository.save(heart);
+          today.incrementLikeCount();
         }
-        todayRepository.save(today);
+
+        TodayEntity updateToday = todayRepository.save(today);
+        return updateToday.getTodayHearts();
     }
 
     // 사용자가 특정 오늘의 글에 대해 좋아요를 눌렀는지 여부 확인
@@ -55,8 +54,6 @@ public class HeartService {
         UserEntity user = userRepository.findById(userSq)
                 .orElseThrow(() -> new RuntimeException("유저가 없습니다."));
 
-        Optional<HeartEntity> heart = heartRepository.findByUserAndToday(user, today);
-
-        return heart.map(HeartEntity::getStatus).orElse(false);
+        return heartRepository.existsByUserAndToday(user, today);
     }
 }

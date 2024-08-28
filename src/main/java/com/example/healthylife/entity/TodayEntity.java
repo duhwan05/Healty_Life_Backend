@@ -16,7 +16,6 @@ import java.util.List;
 @NoArgsConstructor
 public class TodayEntity implements Serializable {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "today_sq", unique = true,nullable = false)
@@ -48,6 +47,7 @@ public class TodayEntity implements Serializable {
     @OneToMany(mappedBy = "todayEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TodayCommentsEntity> comments;
 
+    //이미지
     @Column(name = "image_url")
     private String imageurl;
 

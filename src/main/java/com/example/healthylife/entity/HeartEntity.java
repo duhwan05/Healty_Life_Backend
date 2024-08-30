@@ -18,11 +18,11 @@ public class HeartEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long heartSq;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_sq", nullable = false)
     private UserEntity user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "today_sq", nullable = false)
     private TodayEntity today;
 

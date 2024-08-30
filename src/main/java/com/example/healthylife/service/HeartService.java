@@ -35,11 +35,11 @@ public class HeartService {
             today.decrementLikeCount();
         } else {
             HeartEntity heart = new HeartEntity(today,user);
-            heartRepository.saveAndFlush(heart); // 즉시 저장 시도
+            heartRepository.save(heart);
             today.incrementLikeCount();
         }
 
-        todayRepository.saveAndFlush(today); // 즉시 저장 시도
+        todayRepository.save(today);
         return today.getTodayHearts();
     }
 

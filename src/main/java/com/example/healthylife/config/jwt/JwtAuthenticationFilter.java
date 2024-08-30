@@ -28,8 +28,15 @@ public class    JwtAuthenticationFilter extends GenericFilterBean {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        String path = httpRequest.getRequestURI();
+        // Swagger UI와 같은 공개된 엔드포인트는 필터링하지 않음
+        if (path.startsWith("/swagger-ui/") || path.startsWith("/v3/api-docs/") || path.startsWith("/swagger-resources/") || path.startsWith("/webjars/")) {
+            chain.doFilter(request, response);
+            return;
+        }
         try {
-            restoreAuthentication((HttpServletRequest) request, (HttpServletResponse) response);
+            restoreAuthentication(httpRequest, (HttpServletResponse) response);
             chain.doFilter(request, response);
         } catch (AuthenticationException e) {
             ((HttpServletResponse) response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);

@@ -31,12 +31,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().configurationSource(corsConfigurationSource()) // CORS 설정 추가
                 .and()
                 .authorizeRequests()
+                .antMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**").permitAll()
                 .antMatchers("/user/one","/user/delete","/user/update").authenticated()
                 .antMatchers("/community/register", "/community/update", "/community/delete/**","/community/recommend/**","/community/myCommunityContents").authenticated()
                 .antMatchers("/communityComments/insert", "/communityComments/update", "/communityComments/delete/**").authenticated()
                 .antMatchers("/today/create","/today/myTodayContents","/today/update/**","/today/delete/**","/today/todayDetail/**").authenticated()
                 .antMatchers("/todayComments/register", "/todayComments/update", "/todayComments/delete/**").authenticated()
-                .antMatchers("/hearts/hasLiked/**", "/hearts/toggle/**").authenticated()
+                .antMatchers("/hearts/hasLiked/**").authenticated()
                 .anyRequest().permitAll()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);

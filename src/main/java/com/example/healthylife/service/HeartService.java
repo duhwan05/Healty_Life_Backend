@@ -26,7 +26,6 @@ public class HeartService {
         UserEntity user = userRepository.findById(userSq)
                 .orElseThrow(() -> new RuntimeException("유저가 없습니다."));
 
-        //찜 여부 확인
         boolean alreadyHeart = heartRepository.existsByUserAndToday(user,today);
 
         if(alreadyHeart) {
@@ -35,14 +34,15 @@ public class HeartService {
             heartRepository.delete(heart);
             today.decrementLikeCount();
         } else {
-          HeartEntity heart = new HeartEntity(today,user);
-          heartRepository.save(heart);
-          today.incrementLikeCount();
+            HeartEntity heart = new HeartEntity(today,user);
+            heartRepository.saveAndFlush(heart); // 즉시 저장 시도
+            today.incrementLikeCount();
         }
 
-        TodayEntity updateToday = todayRepository.save(today);
-        return updateToday.getTodayHearts();
+        todayRepository.saveAndFlush(today); // 즉시 저장 시도
+        return today.getTodayHearts();
     }
+
 
     // 사용자가 특정 오늘의 글에 대해 좋아요를 눌렀는지 여부 확인
     public boolean hasUserLiked(Long todaySq, Long userSq) {
